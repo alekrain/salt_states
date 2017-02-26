@@ -1,0 +1,82 @@
+#===============================================================================
+# SaltStack State File
+#
+# NAME: packages/map.jinja
+# VERSION: 1.0
+# DATE  : 2015.05.21
+#
+# PURPOSE: Map the right names of packages based on the distribution.
+#
+# NOTES: Currently only CentOS based releases are supported.
+#
+
+{% set version_packages = salt.grains.filter_by({
+  'CentOS Linux-7': ['iptables-services', 'man-db'],
+  'CentOS-6': ['ftop', 'man']
+}, grain='osfinger') %}
+
+{% set base_packages = [
+  'epel-release',
+  'bind-utils',
+  'dstat',
+  'git',
+  'htop',
+  'iftop',
+  'iotop',
+  'lsof',
+  'mtr',
+  'nagios-plugins-all',
+  'nfs-utils',
+  'net-tools',
+  'ntp',
+  'patch',
+  'policycoreutils-python',
+  'pv',
+  'rsync',
+  'screen',
+  'smartmontools',
+  'strace',
+  'sysstat',
+  'tcpdump',
+  'telnet',
+  'tree',
+  'vim-enhanced',
+  'wget',
+] %}
+
+# Development packages
+{% set development_packages = [
+  'bison',
+  'byacc',
+  'cscope',
+  'ctags',
+  'diffstat',
+  'doxygen',
+  'flex',
+  'gcc-c++',
+  'gcc-gfortran',
+  'indent',
+  'intltool',
+  'libtool',
+  'patchutils',
+  'python-devel',
+  'python2-pip',
+  'rcs',
+  'redhat-rpm-config',
+  'rpm-build',
+  'subversion',
+  'swig',
+  'systemtap',
+] %}
+
+# Pip Packages
+{% set pip_packages = [
+  'psutil',
+  'pyinotify',
+] %}
+
+# Service packages
+# package name: service name
+{% set service_packages = {
+  'at': 'atd'
+} %}
