@@ -3,7 +3,6 @@
 #
 # NAME: hosts/grain_roles.sls
 # WRITTEN BY: Alek Tant of SmartAlek Solutions
-# VERSION: 1.0
 # DATE  : 2016.12.07
 #
 # PURPOSE: Append entries into hosts file for other hosts that use the same
