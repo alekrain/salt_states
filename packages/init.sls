@@ -11,43 +11,60 @@
 #
 
 # Import the map.jinja file
-{% from "packages/map.jinja" import base_packages with context %}
-{% from "packages/map.jinja" import version_packages with context %}
-{% from "packages/map.jinja" import development_packages with context %}
-{% from "packages/map.jinja" import pip_packages with context %}
-{% from "packages/map.jinja" import service_packages with context %}
+{%- from "packages/map.jinja" import base_packages with context %}
+{%- from "packages/map.jinja" import version_packages with context %}
+{%- from "packages/map.jinja" import development_packages with context %}
+{%- from "packages/map.jinja" import pip_packages with context %}
+{%- from "packages/map.jinja" import service_packages with context %}
+
+# Refresh packages db once instead of every time a package is installed.
+packages_refresh:
+  module.run:
+    - name: pkg.refresh_db
 
 
 # Standard need to have packages as well as some nice to have utilities.
-{% for base_package in base_packages %}
-{{ base_package }}:
+packages_base:
   pkg.installed:
-    - names: []
-{% endfor %}
+    - refresh: False
+    - names:
+{%- for base_package in base_packages %}
+      - {{ base_package }}
+{%- endfor %}
+
 
 # Version Packages
-{% for version_package in version_packages %}
-{{ version_package }}:
+packages_version:
   pkg.installed:
-    - names: []
-{% endfor %}
+    - refresh: False
+    - names:
+{%- for version_package in version_packages %}
+      - {{ version_package }}
+{%- endfor %}
 
-{% for development_package in development_packages %}
-{{ development_package }}:
+
+packages_development:
   pkg.installed:
-    - names: []
-{% endfor %}
+    - refresh: False
+    - names:
+{%- for development_package in development_packages %}
+      - {{ development_package }}
+{%- endfor %}
+
 
 {% for pip_package in pip_packages %}
-{{ pip_package }}:
+packages_pip_{{ pip_package }}:
   pip.installed:
-    - name: []
-{% endfor %}
+    - name: {{ pip_package }}
+{%- endfor %}
+
 
 {% for package_name, service_name in service_packages.iteritems() %}
-{{ package_name }}:
-  pkg.installed: []
+packages_service_{{ package_name }}:
+  pkg.installed:
+    - name: {{ package_name }}
+    - refresh: False
   service.running:
     - name: {{ service_name }}
     - enable: True
-{% endfor %}
+{%- endfor %}

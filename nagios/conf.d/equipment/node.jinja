@@ -1,0 +1,43 @@
+{# ============================================================================
+# Jinja Template File
+#
+# NAME: nagios/conf.d/equipment/node.jinja
+# WRITTEN BY: Alek Tant of SmartAlek Solutions
+# DATE  : 2016.11.12
+#
+# PURPOSE: Setup hosts for checking in Nagios.
+#
+# NOTES:
+-#}
+{% set params1 = nagios['equipment'][type][node] -%}
+{% set ip = salt.mine.get(expr_form='glob', tgt=node, fun='network.ip_addrs') -%}
+
+define host{
+    use         {{ params1.use }}
+    host_name   {{ node }}
+    alias       {{ params1.alias }}
+    {% if ip != {} -%}
+    address     {{ ip[node][0] }}
+    {% endif -%}
+    hostgroups  {{ params1.hostgroups }}
+    {% if params1.parent is defined -%}
+    parent      {{ params1.parent }}
+    {% endif %}
+}
+
+{% if params1.services is defined -%}
+{% for service, params2 in params1['services'].iteritems() -%}
+define service{
+        use                             {{ params2.use }}
+        host_name                       {{ node }}
+        service_description             {{ params2.service_description }}
+        display_name                    {{ service }}
+        {% if params2.display_name is defined -%}
+        display_name                    {{ params2.display_name }}
+        {% endif -%}
+        {% if params2.check_command is defined -%}
+        check_command                   {{ params2.check_command }}
+        {% endif -%}
+        }
+{% endfor %}
+{% endif -%}

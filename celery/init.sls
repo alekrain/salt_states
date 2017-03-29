@@ -10,13 +10,14 @@
 # NOTES:
 #   2015.07.09 - Designed to work with CentOS7
 #   2017.02.23 - Required Pillar data though values can differ.
-#   Pillar should look like:
-#     celery:
-#       limits: |
-#         celery  soft  nproc       4000
-#         celery  hard  nproc       4000
-#         celery  soft  nofile      4000
-#         celery  hard  nofile      4000
+#
+# EXAMPLE PILLAR:
+# celery:
+#   limits: |
+#     celery  soft  nproc       4000
+#     celery  hard  nproc       4000
+#     celery  soft  nofile      4000
+#     celery  hard  nofile      4000
 #
 
 celery_install:

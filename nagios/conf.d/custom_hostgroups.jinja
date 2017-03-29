@@ -1,0 +1,31 @@
+{# ============================================================================
+# Jinja Template File
+#
+# NAME: nagios/conf.d/custom_hostgroups.jinja
+# WRITTEN BY: Alek Tant of SmartAlek Solutions
+# DATE  : 2017.03.28
+#
+# PURPOSE: Makes custom hostgroups available to Nagios.
+#
+# NOTES:
+-#}
+{% for hostgroup, params1 in nagios['confd']['custom_hostgroups'].iteritems() -%}
+define hostgroup{
+        hostgroup_name  {{ hostgroup }}
+        alias           {{ params1.alias }}
+        }
+
+        {% for service, params2 in params1['services'].iteritems() -%}
+        define service{
+                use                             {{ params2.use }}
+                hostgroup_name                  {{ hostgroup }}
+                service_description             {{ service }}
+                {% if params2.check_command is defined -%}
+                check_command                   {{ params2.check_command }}
+                {% endif -%}
+                {% if params2.display_name is defined -%}
+                display_name                    {{ params2.display_name }}
+                {% endif -%}
+                }
+        {% endfor %}
+{% endfor -%}

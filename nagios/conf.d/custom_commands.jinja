@@ -1,0 +1,17 @@
+{# ============================================================================
+# Jinja Template File
+#
+# NAME: nagios/conf.d/custom_commands.jinja
+# WRITTEN BY: Alek Tant of SmartAlek Solutions
+# DATE  : 2017.03.28
+#
+# PURPOSE: Makes custom commands available to Nagios.
+#
+# NOTES:
+-#}
+{% for name, command in nagios['confd']['custom_commands'].iteritems() %}
+define command{
+	command_name	{{ name }}
+	command_line	{{ command }}
+}
+{% endfor %}

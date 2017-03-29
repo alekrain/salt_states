@@ -1,0 +1,35 @@
+{# ============================================================================
+# Jinja Template File
+#
+# NAME: nagios/conf.d/custom_services.jinja
+# WRITTEN BY: Alek Tant of SmartAlek Solutions
+# DATE  : 2017.03.28
+#
+# PURPOSE: Makes custom services available to Nagios.
+#
+# NOTES:
+-#}
+{% for service, params in nagios['confd']['custom_services'].iteritems() %}
+define service{
+  name                      {{ service }}
+  use                       {{ params.use }}
+  {% if params.passive_checks_enabled is defined -%}
+  passive_checks_enabled    {{ params.passive_checks_enabled }}
+  {% endif -%}
+  {% if params.active_checks_enabled is defined -%}
+  active_checks_enabled     {{ params.active_checks_enabled }}
+  {% endif -%}
+  {% if params.check_freshness is defined -%}
+  check_freshness           {{ params.check_freshness }}
+  {% endif -%}
+  {% if params.freshness_threshold is defined -%}
+  freshness_threshold       {{ params.freshness_threshold }}
+  {% endif -%}
+  {% if params.check_command is defined -%}
+  check_command             {{ params.check_command }}
+  {% endif -%}
+  {% if params.register is defined -%}
+  register                  {{ params.register }}
+  {% endif -%}
+  }
+{% endfor %}

@@ -1,0 +1,54 @@
+{# ============================================================================
+# Jinja Template File
+#
+# NAME: nagios/conf.d/custom_contacts.jinja
+# WRITTEN BY: Alek Tant of SmartAlek Solutions
+# DATE  : 2017.03.28
+#
+# PURPOSE: Makes custom contacts available to Nagios.
+#
+# NOTES:
+-#}
+{% for contact, params in nagios['confd']['custom_contacts'].iteritems() -%}
+define contact{
+  use             {{ params.use }}
+  {% if params.name is defined -%}
+  name            {{ params.name }}
+  {% endif -%}
+  {% if params.service_notification_options is defined -%}
+  service_notification_options  {{ params.service_notification_options }}
+  {% endif -%}
+  {% if params.host_notification_options is defined -%}
+  host_notification_options     {{ params.host_notification_options }}
+  {% endif -%}
+  {% if params.service_notification_commands is defined -%}
+  service_notification_commands {{ params.service_notification_commands }}
+  {% endif -%}
+  {% if params.host_notification_commands is defined -%}
+  host_notification_commands    {{ params.host_notification_commands }}
+  {% endif -%}
+  {% if params.register is defined -%}
+  register                      {{ params.register }}
+  {% endif -%}
+
+  {%- if params.contact_name is defined -%}
+  contact_name    {{ params.contact_name }}
+  {% endif -%}
+  {% if params.contactgroups is defined -%}
+  contactgroups   {{ params.contactgroups }}
+  {% endif -%}
+  {% if params.email is defined -%}
+  email           {{ params.email }}
+  {% endif -%}
+  {% if params.pager is defined -%}
+  pager           {{ params.pager }}
+  {% endif -%}
+  {% if params.address1 is defined -%}
+  address1        {{ params.address1 }}
+  {% endif -%}
+  {% if params.address2 is defined -%}
+  address2        {{ params.address2 }}
+  {% endif -%}
+  }
+
+{% endfor -%}

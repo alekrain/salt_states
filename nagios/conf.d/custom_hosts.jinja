@@ -1,0 +1,44 @@
+{# ============================================================================
+# Jinja Template File
+#
+# NAME: nagios/conf.d/custom_hosts.jinja
+# WRITTEN BY: Alek Tant of SmartAlek Solutions
+# DATE  : 2017.03.28
+#
+# PURPOSE: Makes custom host templates available to Nagios.
+#
+# NOTES:
+-#}
+{% for host, params in nagios['confd']['custom_hosts'].iteritems() %}
+define host{
+  name                      {{ host }}
+  use                       {{ params.use }}
+  {% if params.notification_period is defined -%}
+  notification_period       {{ params.notification_period }}
+  {% endif -%}
+  {% if params.notification_interval is defined -%}
+  notification_interval     {{ params.notification_interval }}
+  {% endif -%}
+  {% if params.notification_options is defined -%}
+  notification_options      {{ params.notification_options }}
+  {% endif -%}
+  {% if params.contact_groups is defined -%}
+  contact_groups            {{ params.contact_groups }}
+  {% endif -%}
+  {% if params.statusmap_image is defined -%}
+  statusmap_image           {{ params.statusmap_image }}
+  {% endif -%}
+  {% if params.vrml_image is defined -%}
+  vrml_image                {{ params.vrml_image }}
+  {% endif -%}
+  {% if params.icon_image is defined -%}
+  icon_image                {{ params.icon_image }}
+  {% endif -%}
+  {% if params.icon_image_alt is defined -%}
+  icon_image_alt            {{ params.icon_image_alt }}
+  {% endif -%}
+  {% if params.register is defined -%}
+  register                  {{ params.register }}
+  {% endif -%}
+  }
+{% endfor %}
