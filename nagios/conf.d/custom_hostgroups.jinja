@@ -19,7 +19,11 @@ define hostgroup{
         define service{
                 use                             {{ params2.use }}
                 hostgroup_name                  {{ hostgroup }}
+                {% if params2.service_description is defined -%}
+                service_description             {{ params2.service_description }}
+                {% else -%}
                 service_description             {{ service }}
+                {% endif -%}
                 {% if params2.check_command is defined -%}
                 check_command                   {{ params2.check_command }}
                 {% endif -%}

@@ -16,7 +16,7 @@ pushover_pushover_notify:
   file.managed:
     - name: /usr/local/libexec/pushover.py
     - source: salt://pushover/pushover.py
-    - owner: root
+    - user: root
     - group: root
     - mode: 775
 

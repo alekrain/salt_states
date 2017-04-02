@@ -18,10 +18,13 @@
 {%- from "packages/map.jinja" import service_packages with context %}
 
 # Refresh packages db once instead of every time a package is installed.
-packages_refresh:
-  module.run:
-    - name: pkg.refresh_db
+# Could do it this way, but it shows up as a change.
+# packages_refresh:
+#   module.run:
+#     - name: pkg.refresh_db
 
+# Instead we'll refresh by a module call through jinja
+{% set refresh = salt.pkg.refresh_db() %}
 
 # Standard need to have packages as well as some nice to have utilities.
 packages_base:

@@ -147,11 +147,20 @@ nagios:
 {% endif %}
 
 include:
-  - ./fcgi
-  - ./php_fpm
-  - ./nginx
-  - ./nagios
+  - nagios.spawn-fcgi
+  - nagios.php-fpm
+  - nagios.nginx
+  - nagios.nagios
 {% if nagios['use_pushover'] == true %}
   - python3
   - pushover
 {% endif %}
+
+{% for service in ['spawn-fcgi', 'php-fpm', 'nginx', 'nagios'] -%}
+nagios_service_running_{{ service }}:
+  service.running:
+    - name: {{ service }}
+    - enable: True
+    - watch:
+      - sls: nagios.{{ service }}
+{% endfor -%}

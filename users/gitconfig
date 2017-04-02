@@ -1,0 +1,5 @@
+[user]
+	name = {{ user }}
+	email = {{ user }}@{{ hostname }}
+[status]
+	showuntrackedfiles = no

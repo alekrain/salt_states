@@ -17,6 +17,7 @@ nagios_nginx_install_packages:
   pkg.installed:
     - names:
       - nginx
+      - httpd-tools
 
 # Install the nginx config and setup TLS.
 nagios_nginx_config:
@@ -64,11 +65,3 @@ nagios_nginx_htpasswd_{{ name }}:
     - password: {{ password }}
     - options: m
 {% endfor %}
-
-nagios_nginx_service:
-  service.running:
-    - name: nginx
-    - enable: True
-    - watch:
-      - pkg: nagios_nginx_install_packages
-      - file: nagios_nginx_config

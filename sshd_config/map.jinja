@@ -1,0 +1,54 @@
+#===============================================================================
+# SaltStack State File
+#
+# NAME: sshd_config/map.jinja
+# WRITTEN BY: Alek Tant of SmartAlek Solutions
+# DATE  : 2016.01.16
+#
+# PURPOSE: Use logic to determine values to be used in the state.
+#
+# CHANGE LOG:
+#
+# NOTES:
+#
+#
+
+{% set roles = salt.grains.get('roles', []) %}
+{% set os = salt.grains.get('osfinger') %}
+
+{% load_yaml as sshd_configurations %}
+defaults:
+  permit_root_login : 'no'
+  password_authentication : 'no'
+  config : '/etc/ssh/sshd_config'
+  servicename : 'sshd'
+  sshd_package : 'openssh-server'
+  gssapi_cleanup_credentials : 'no'
+  use_privilege_separation : 'sandbox'
+  pubkey_authentication : 'yes'
+  use_dns : 'no'
+root_login:
+  permit_root_login : 'yes'
+insecure:
+  permit_root_login : 'yes'
+  password_authentication : 'yes'
+centos6:
+  gssapi_cleanup_credentials: 'yes'
+  use_privilege_separation: 'yes'
+{% endload %}
+
+{% set sshd_params = sshd_configurations.defaults %}
+
+{% if salt.pillar.get('sshd_config:root_login') == True %}
+  {% do sshd_params.update(sshd_configurations.root_login) %}
+{% elif salt.pillar.get('sshd_config:insecure') == True %}
+  {% do sshd_params.update(sshd_configurations.insecure) %}
+{% elif roles is iterable and 'insecure' in roles %}
+  {% do sshd_params.update(sshd_configurations.insecure) %}
+{% elif roles is iterable and 'moderate' in roles %}
+  {% do sshd_params.update(sshd_configurations.root_login) %}
+{% endif %}
+
+{% if os == 'CentOS-6' %}
+  {% do sshd_params.update(sshd_configurations.centos6) %}
+{% endif %}

@@ -73,8 +73,6 @@ nagios_custom_conf_{{ config }}:
     - mode: 644
     - defaults:
         nagios: {{ nagios }}
-    - watch_in:
-      - service: nagios_nagios_service
 {% endfor %}
 
 {% for type, params in nagios['confd']['custom_hosts'].iteritems() %}
@@ -104,8 +102,6 @@ nagios_equipment_{{ type }}_{{ node }}:
         nagios: {{ nagios }}
         type: {{ type }}
         node: {{ node }}
-    - watch_in:
-      - service: nagios_nagios_service
 {% endfor %}
 {% endfor %}
 
@@ -125,14 +121,3 @@ nagios_cgi_config:
     - name: /etc/nagios/cgi.cfg
     - pattern: '=nagiosadmin'
     - repl: '=*'
-
-nagios_nagios_service:
-  service.running:
-    - name: nagios
-    - enable: True
-    - onlyif: /sbin/nagios -v /etc/nagios/nagios.cfg
-    - watch:
-      - pkg: nagios_install_packages
-      - file: nagios_config_inc_php
-      - file: nagios_config
-      - file: nagios_cgi_config
