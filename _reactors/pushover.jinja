@@ -1,0 +1,36 @@
+# =============================================================================
+# SaltStack Reactor File
+#
+# NAME: _reactors/pushover.sls
+# WRITTEN BY: Alek Tant of SmartAlek Solutions
+# DATE  : 2016.10.05
+#
+# PURPOSE: Send pushover alerts for events tagged with 'alert'
+#
+# NOTES: This file is managed by salt.
+#
+
+
+# There is no need to evaluate the tag as that is already handled by the
+# reactor conf. Here we can just say what needs to be done with the event.
+
+{#- There is a confusing blend of jinja going on here. The tgt is a jinja var
+that is passed in when the state is rendered so it can create the file correctly
+on the master. The raw tags allow the other two variables to remain jinja vars
+so they can be used when the master is calling the reactor file.
+#}
+
+send_pushover_event:
+  local.pushover.post_message:
+    - tgt: {{ salt.grains.get('master') }}
+{%- raw %}
+    - tag: {{ tag }}
+    - arg:
+        - message={{ data['data'] }}
+        - title={{ data['id'] }}
+{%- endraw %}
+        - user={{ params.pushover_user_key }}
+        - token={{ params.pushover_app_token }}
+        - retry=2
+        - sound=bugle
+        - priority=0

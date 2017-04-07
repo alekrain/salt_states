@@ -23,10 +23,18 @@ nrpe_plugins_install_packages:
 {% endfor -%}
 
 # Install all necessary pip modules
-{% for pip_package in nrpe['plugins']['pip_packages'] -%}
-nrpe_plugins_install_pip_packages:
+{% for pip2_package in nrpe['plugins']['pip2_packages'] -%}
+nrpe_plugins_install_{{ pip2_package }}:
   pip.installed:
-    - name: {{ pip_package }}
+    - name: {{ pip2_package }}
+    - bin_env: /bin/pip2
+{% endfor -%}
+
+{% for pip3_package in nrpe['plugins']['pip3_packages'] -%}
+nrpe_plugins_install_{{ pip3_package }}:
+  pip.installed:
+    - name: {{ pip3_package }}
+    - bin_env: /bin/pip3
 {% endfor -%}
 
 # Copy down the scripts and set the appropriate selinux context

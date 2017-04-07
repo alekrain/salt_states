@@ -14,13 +14,11 @@
 #   services:
 #     - NetworkManager
 #     - firewalld
-#     - avahi-daemon
-#     - dnsmasq
 #
 
 {% set disable = salt.pillar.get('disable:services') %}
 
-{% for service in disable %}
+{% for service in disable.iterkeys() %}
 disable_service_{{ service }}:
   service.dead:
     - name: {{ service }}

@@ -23,7 +23,7 @@
     #     - command[check_shm]=/usr/lib64/nagios/plugins/check_disk -w 20% -c 10% -p /dev/shm
     #   command_timeout: 60
     #   connection_timeout: 300
-    #   nagios_server: {{ salt.dig.A('nagios') }}
+    #   nagios_server: { salt.dig.A('nagios') }
     #   plugins:
     #     packages: []
     #     pip_packages:
@@ -35,7 +35,6 @@
     #       - check_uptime_py.te
     #     selinux_booleans:
     #       some_boolean: (on || off)
-#
 
 
 # Get the nrpe pillar data

@@ -1,0 +1,29 @@
+# =============================================================================
+# SaltStack Reactor File
+#
+# NAME: _reactors/nagios_forward_event.sls
+# WRITTEN BY: Alek Tant of SmartAlek Solutions
+# DATE  : 2016.07.11
+#
+# PURPOSE: Forward events tagged with nagios to the nagios server
+#
+# NOTES: This file is managed by salt.
+#
+
+
+# There is no need to evaluate the tag as that is already handled by the
+# reactor conf. Here we can just say what needs to be done with the event.
+
+{#- There is a confusing blend of jinja going on here. The tgt is a jinja var
+that is passed in when the state is rendered so it can create the file correctly
+on the master. The raw tags allow the other two variables to remain jinja vars
+so they can be used when the master is calling the reactor file.
+#}
+nagios_forward_event:
+  local.event.fire:
+    - tgt: {{ params.nagios_minion_id }}
+    - arg:
+{%- raw %}
+      - data: {{ data }}
+      - tag: {{ tag }}
+{%- endraw %}

@@ -1,0 +1,6 @@
+{% for section, pairs in hosts.iteritems() -%}
+# {{ section }}
+{% for hostname, ip in pairs.iteritems() -%}
+{{ ip }}  {{ hostname }}
+{% endfor -%}
+{% endfor %}

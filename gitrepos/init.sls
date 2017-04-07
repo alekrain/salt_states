@@ -27,9 +27,9 @@ gitrepos_install_packages:
 gitrepos_{{ repo }}:
   git.latest:
     - name: {{ params.remote_path }}
-{% if params.revision is defined %}
+{% if params.revision is defined -%}
     - rev: {{ params.revision }}
-{% endif %} {# repo.revision #}
+{% endif -%}
     - target: {{ params.local_path }}
     - user: {{ params.user }}
     - update_head: False
