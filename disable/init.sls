@@ -12,8 +12,8 @@
 # EXAMPLE PILLAR:
 # disable:
 #   services:
-#     - NetworkManager
-#     - firewalld
+#     NetworkManager
+#     firewalld
 #
 
 {% set disable = salt.pillar.get('disable:services') %}
