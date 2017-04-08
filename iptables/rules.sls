@@ -11,7 +11,7 @@
 #
 
 
-{%- set iptables = salt.pillar.get('iptables') %}
+{% set iptables = salt.pillar.get('iptables') %}
 
 {%- if iptables.install == true %}
 {%- for table in iptables['ruleset'].iterkeys() %}

@@ -44,7 +44,7 @@ iptables_{{ table }}_{{ chain }}_flush:
 {% endfor %} {#  for chain in iptables['ruleset'][table].iterkeys() #}
 {% endfor %} {#  for table in iptables['ruleset'].iterkeys() #}
 
-iptables_filter_SPECIAL_present:
+iptables_filter_SPECIAL_present_jic:
   iptables.chain_present:
     - table: filter
     - name: SPECIAL
@@ -58,5 +58,5 @@ iptables_filter_SPECIAL_flush:
     - name: SPECIAL
     - require:
       - iptables: iptables_filter_SPECIAL_present
-
+{% endif %} {# if iptables.flush is defined and iptables.flush == True #}
 {% endif %} {# if iptables.install == True #}
