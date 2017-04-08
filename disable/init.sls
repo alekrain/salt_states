@@ -12,13 +12,13 @@
 # EXAMPLE PILLAR:
 # disable:
 #   services:
-#     NetworkManager
-#     firewalld
+#     - NetworkManager
+#     - firewalld
 #
 
 {% set disable = salt.pillar.get('disable:services') %}
 
-{% for service in disable.iterkeys() %}
+{% for service in disable %}
 disable_service_{{ service }}:
   service.dead:
     - name: {{ service }}

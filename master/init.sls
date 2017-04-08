@@ -97,14 +97,14 @@ master_saltapi_packages:
       - openssl-devel
       - salt-api
 
+master_saltapi_pip_cherrypy:
+  pip.installed:
+    - name: CherryPy
+
 master_saltapi_pip_pyopenssl:
   pip.installed:
     - name: pyOpenSSL
     - reload_modules: true
-
-master_saltapi_pip_cherrypy:
-  pip.installed:
-    - name: CherryPy
 
 master_saltapi_keys:
   module.run:
