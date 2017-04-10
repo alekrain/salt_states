@@ -59,7 +59,7 @@ def beacon(config):
           salt_minion_heartbeat:
             enabled: True
             interval: 60
-            tag_append: salt_minion_heartbeat
+            tag_append: ''
     '''
 
     minion_heartbeat = get_minion_heartbeat()
