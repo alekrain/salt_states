@@ -1,0 +1,6 @@
+[submodule "_beacons"]
+	path = _beacons
+	url = https://github.com/alektant/salt_beacons.git
+[submodule "_engines"]
+	path = _engines
+	url = https://github.com/alektant/npi.git
