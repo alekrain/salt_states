@@ -1,0 +1,78 @@
+#===============================================================================
+# SaltStack State File
+#
+# NAME: consul/map.jinja
+# WRITTEN BY: Alek Tant of SmartAlek Solutions
+# DATE  : 2017.04.02
+#
+# PURPOSE: Map params based on the roles grain.
+#
+# NOTES:
+#
+
+
+{% set grains = salt.grains.get('roles:consul', []) %}
+{% if grains == 'bootstrap' %}
+{% set type = 'bootstrap' %}
+{% elif grains == 'server' %}
+{% set type = 'server' %}
+{% else %}
+{% set type = 'client' %}
+{% endif %}
+
+{% set params = salt['grains.filter_by']({
+  'bootstrap': {
+    'bootstrap': 'true',
+    'server': 'true',
+    'datacenter': 'dc1',
+    'data_dir': '/var/consul',
+    'encrypt': 'B4aD2Yds6ahe71ffhfyq64==',
+    'log_level': 'INFO'
+  },
+  'server': {
+    'bootstrap': 'false',
+    'server': 'true',
+    'datacenter': 'dc1',
+    'data_dir': '/var/consul',
+    'encrypt': 'B4aD2Yds6ahe71ffhfyq64==',
+    'log_level': 'INFO',
+    'ui': true,
+    'client_addr': '0.0.0.0'
+  },
+  'client': {
+    'server': 'false',
+    'datacenter': 'dc1',
+    'data_dir': '/var/consul',
+    'encrypt': 'B4aD2Yds6ahe71ffhfyq64==',
+    'log_level': 'INFO'
+  }
+}, grain='roles:consul', default='client') %}
+
+# Startup script
+{%- if 'CentOS Linux-7' == salt.grains.get('osfinger') %}
+  {%- set script_location = '/etc/systemd/system/consul.service' %}
+  {%- set script_source = 'salt://consul/consul.service.jinja' %}
+{%- else %}
+  {%- set script_location = '/etc/init/consul.conf' %}
+  {%- set script_source = 'salt://consul/consul.conf.jinja' %}
+{%- endif %}
+
+# Figure out which IP to use.
+{%- if salt.match.ipcidr('10.0.0.0/8') %}
+  {%- set cidr = '10.0.0.0/8' %}
+{%- elif salt.match.ipcidr('172.16.0.0/12') %}
+  {%- set cidr = '172.16.0.0/12' %}
+{%- elif salt.match.ipcidr('192.168.0.0/16') %}
+    {%- set cidr = '192.168.0.0/16' %}
+{%- endif %}
+{% set myip = salt['network.ip_addrs'](cidr=cidr)[0] %}
+
+
+# Get IPs from all consul servers, but only add the first into this list.
+{% set ips = [] %}
+{% for consul_server_ips in salt.mine.get(tgt='roles:consul:server', fun='network.ip_addrs', expr_form='grain').itervalues() %}
+{% do ips.append(consul_server_ips[0]) %}
+{% endfor %}
+{% for consul_bootstrap_ips in salt.mine.get(tgt='roles:consul:bootstrap', fun='network.ip_addrs', expr_form='grain').itervalues() %}
+{% do ips.append(consul_bootstrap_ips[0]) %}
+{% endfor %}
