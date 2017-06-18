@@ -11,6 +11,7 @@
 #
 # EXAMPLE PILLAR:
 # kernel_params:
+#   install: true
 #   params:
 #     net.ipv6.conf.all.disable_ipv6: 1
 #     net.netfilter.nf_conntrack_max: 1048576

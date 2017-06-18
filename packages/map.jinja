@@ -28,7 +28,6 @@
   'nagios-plugins-all',
   'nfs-utils',
   'net-tools',
-  'ntp',
   'patch',
   'policycoreutils-python',
   'pv',
@@ -78,5 +77,7 @@
 # Service packages
 # package name: service name
 {% set service_packages = {
-  'at': 'atd'
+  'at': 'atd',
+  'chrony': 'chronyd',
+  'yum-cron': 'yum-cron'
 } %}
