@@ -37,7 +37,11 @@
 #       max_clients: 100
 #       status: /var/log/openvpn-status.log
 #       verb: 3
-#       explicit_exit_notify: 1
+#       explicit_exit_notify:
+#     dh: |
+#       -----BEGIN DH PARAMETERS-----
+#       YOUR DH.PEM GOES HERE
+#       -----END DH PARAMETERS-----
 #     ca_crt: |
 #       -----BEGIN CERTIFICATE-----
 #       YOUR CA CERTIFICATE GOES HERE
@@ -70,10 +74,27 @@ openvpn_server_config:
     - watch_in:
       - file: openvpn_service
 
+openvpn_dh_params:
+  file.managed:
+    - name: /etc/openvpn/dh.pem
+    - contents_pillar: openvpn:server:dh
+    - user: root
+    - group: root
+    - mode: 600
+    - watch_in:
+      - service: openvpn_service
+
+openvpn_server_dir:
+  file.directory:
+    - name: /etc/openvpn/server
+    - user: root
+    - group: root
+    - mode: 700
+
 {% for file, contents in {'ca.crt': 'ca_crt', 'server.key': 'server_key', 'server.crt': 'server_crt'}.iteritems() %}
 openvpn_{{ file }}:
   file.managed:
-    - name: /etc/openvpn/server/test/{{ file }}
+    - name: /etc/openvpn/server/{{ file }}
     - contents_pillar: openvpn:server:{{ contents }}
     - user: root
     - group: root

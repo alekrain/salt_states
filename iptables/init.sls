@@ -81,6 +81,6 @@
 
 
 include:
-  - iptables/ipset
+  - iptables/ipsets
   - iptables/iptables
   - iptables/rules

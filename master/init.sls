@@ -56,9 +56,10 @@ master_master_packages:
       - salt-master
 
 master_master_conf:
-  file.managed:
+  file.serialize:
     - name: /etc/salt/master
-    - contents_pillar: master:master:conf
+    - dataset_pillar: "master:master:conf"
+    - formatter: yaml
     - user: root
     - group: root
     - mode: 600
@@ -130,13 +131,16 @@ master_saltapi_restart:
 {% if master.cloud is defined %}
 master_cloud_packages:
   pkg.installed:
-    - name: salt-cloud
+    - names:
+      - salt-cloud
+      - libvirt-python
 
 {% for provider in master.cloud.providers %}
 master_cloud_providers_{{ provider }}:
-  file.managed:
+  file.serialize:
     - name: /etc/salt/cloud.providers.d/{{ provider }}.conf
-    - contents_pillar: master:cloud:providers:{{ provider }}
+    - dataset_pillar: master:cloud:providers:{{ provider }}
+    - formatter: yaml
     - user: root
     - group: root
     - mode: 600
@@ -144,9 +148,10 @@ master_cloud_providers_{{ provider }}:
 
 {% for profile in master.cloud.profiles %}
 master_cloud_profiles_{{ profile }}:
-  file.managed:
+  file.serialize:
     - name: /etc/salt/cloud.profiles.d/{{ profile }}.conf
-    - contents_pillar: master:cloud:profiles:{{ profile }}
+    - dataset_pillar: master:cloud:profiles:{{ profile }}
+    - formetter: yaml
     - user: root
     - group: root
     - mode: 600

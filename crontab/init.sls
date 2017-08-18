@@ -24,9 +24,16 @@
 #
 
 {%- set crontab = salt.pillar.get('crontab') %}
+
 {%- for user, tasks in crontab.iteritems() %}
+crontab_add_header:
+  cron.env_present:
+    - name: PATH
+    - user: {{ user }}
+    - value: "/usr/local/sbin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin"
+
 {%- for task, params in tasks.iteritems() %}
-{{ user }}_{{ task }}:
+crontab_{{ user }}_{{ task }}:
   cron.present:
     - user: {{ user }}
     - identifier: {{ params.identifier }}

@@ -18,7 +18,7 @@ iptables_installed:
   pkg.installed:
     - name: iptables-services
     - require:
-      - sls: iptables/ipset
+      - sls: iptables/ipsets
   service.enabled:
     - name: iptables
     - require:
@@ -34,7 +34,7 @@ iptables_{{ table }}_{{ chain }}_present:
       - service: iptables_installed
 
 {% if iptables.flush is defined and iptables.flush == True %}
-iptables_{{ table }}_{{ chain }}_flush:
+iptables_{{ table }}_{{ chain }}_flush_{{ loop.index }}:
   iptables.flush:
     - table: {{ table }}
     - name: {{ chain }}

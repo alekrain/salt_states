@@ -12,12 +12,14 @@
 # EXAMPLE PILLAR:
 #
 
+{% set plex = salt.pillar.get('plex') %}
+
 plex_install:
   pkg.installed:
     - sources:
-      - plexmediaserver: https://downloads.plex.tv/plex-media-server/1.5.3.3580-4b377d295/plexmediaserver-1.5.3.3580-4b377d295.x86_64.rpm
+      - plexmediaserver: https://downloads.plex.tv/plex-media-server/1.7.5.4035-313f93718/plexmediaserver-1.7.5.4035-313f93718.x86_64.rpm
 
-{% for mount, params in salt.pillar.get('mounts').iteritems() %}
+{% for mount, params in plex['mounts'].iteritems() %}
 plex_nfs_mount_{{ mount }}:
   mount.mounted:
     - name: {{ params.name }}

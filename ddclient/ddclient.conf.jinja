@@ -5,7 +5,7 @@ pid=/var/run/ddclient/ddclient.pid		# record PID in file.
 ssl=yes					# use ssl-support.
 
 ## Google Domains (www.google.com/domains)
-protocol={{ ddclient.protocol }},
-login={{ ddclient.login }},
-password={{ ddclient.password }},
+protocol={{ ddclient.protocol }}
+login='{{ ddclient.login }}'
+password='{{ ddclient.password }}'
 {{ ddclient.domain_names }}

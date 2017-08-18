@@ -12,55 +12,59 @@
 #   only way I can have the iptables.sls require this sls in a way that works.
 #
 
-{% set ipsets = salt.pillar.get('iptables:ipsets') %}
-{% set sets = ipsets.sets %}
+{% set iptables = salt.pillar.get('iptables') %}
 
-ipset_install:
+ipsets_install:
   pkg.installed:
     - name: ipset
 
-{% if ipsets.install == True %}
-ipset_startstop_script:
+{% if iptables['ipsets'] is defined and iptables.ipsets.install is defined %}
+{% if iptables.ipsets.install == true %}
+  {% set ipsets = iptables.ipsets %}
+  {% set sets = ipsets.sets %}
+
+ipsets_startstop_script:
   file.managed:
-    - name: /usr/libexec/ipset/ipset.start-stop
-    - source: salt://iptables/ipset/ipset.start-stop
+    - name: /usr/libexec/ipsets/ipsets.start-stop
+    - source: salt://iptables/ipsets/ipsets.start-stop
     - user: root
     - group: root
     - mode: 644
     - makedirs: True
 
-ipset_systemd_config:
+ipsets_systemd_config:
   file.managed:
-    - name: /etc/systemd/system/ipset.service
-    - source: salt://iptables/ipset/ipset.service
+    - name: /etc/systemd/system/ipsets.service
+    - source: salt://iptables/ipsets/ipsets.service
     - user: root
     - group: root
     - mode: 644
     - makedirs: True
 
-ipset_systemd_reload:
+ipsets_systemd_reload:
   module.wait:
     - name: service.systemctl_reload
     - watch:
-      - file: ipset_systemd_config
+      - file: ipsets_systemd_config
 
   {% for set_name, set in sets.iteritems() %}
-ipset_present_{{ set_name }}:
+ipsets_present_{{ set_name }}:
   ipset.set_present:
     - name: {{ set_name }}
     - set_type: {{ set.type }}
 
     {% if ipsets['flush'] == true %}
-ipset_flush_{{ set_name }}:
+ipsets_flush_{{ set_name }}:
   ipset.flush:
     - name: {{ set_name }}
     {% endif %}
 
     {% for entry in set.entries %}
-ipset_add_{{ set_name }}_{{ entry }}:
+ipsets_add_{{ set_name }}_{{ entry }}:
   ipset.present:
     - set_name: {{ set_name }}
     - entry: {{ entry }}
     {% endfor %} {# for entry in set.entries #}
   {% endfor %} {# for set_name, set in ipsets.iteritems() #}
-{% endif %} {# if ipsets.install == True #}
+{% endif %} {# if iptables['ipsets:install'] == true #}
+{% endif %} {# if iptables['ipsets'] is defined #}

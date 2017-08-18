@@ -14,11 +14,14 @@ sudoers_installed:
   pkg.installed:
     - name: sudo
 
+
+{% if salt.file.search('/etc/sudoers', '^Defaults\s+requiretty') %}
 sudoers_comment_tty:
   file.comment:
     - name: /etc/sudoers
     - regex: '^Defaults\s+requiretty'
     - char: '# '
+{% endif %}
 
 sudoers_comment_wheel:
   file.comment:

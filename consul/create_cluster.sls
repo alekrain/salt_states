@@ -26,47 +26,49 @@ consul_create_cluster_base:
     - tgt: consul*
     - sls: consul.base
 
-# Set Bootstrap Grain
-consul_create_cluster_bootstrap_grain:
-  salt.function:
-    - tgt: {{ consul1 }}
-    - name: grains.set
-    - kwarg:
-        key: 'roles:consul'
-        val: 'bootstrap'
-        force: true
-
-# Set Server Grains
-consul_create_cluster_server_grain:
-  salt.function:
-    - tgt: {{ consul23 }}
-    - name: grains.set
-    - kwarg:
-        key: 'roles:consul'
-        val: 'server'
-        force: true
+# # Set Bootstrap Grain
+# consul_create_cluster_bootstrap_grain:
+#   salt.function:
+#     - tgt: {{ consul1 }}
+#     - name: grains.set
+#     - kwarg:
+#         key: 'roles:consul'
+#         val: 'bootstrap'
+#         force: true
+#
+# # Set Server Grains
+# consul_create_cluster_server_grain:
+#   salt.function:
+#     - tgt: {{ consul23 }}
+#     - name: grains.set
+#     - kwarg:
+#         key: 'roles:consul'
+#         val: 'server'
+#         force: true
 
 # Start the bootstrap agent.
 consul_create_cluster_bootstrap:
   salt.state:
-    - tgt: {{ consul1 }}
+    - tgt: 'roles:consul:bootstrap'
+    - tgt_type: grain
     - sls: consul.setup
 
 # Start server agents and join them to the cluster.
 consul_create_cluster_servers:
   salt.state:
-    - tgt: {{ consul23 }}
+    - tgt: 'roles:consul:server'
+    - tgt_type: grain
     - sls: consul.setup
 
 # Replace bootstrap grain
-consul_create_cluster_replace_bootstrap_grain:
-  salt.function:
-    - tgt: {{ consul1 }}
-    - name: grains.set
-    - kwarg:
-        key: 'roles:consul'
-        val: server
-        force: true
+# consul_create_cluster_replace_bootstrap_grain:
+#   salt.function:
+#     - tgt: {{ consul1 }}
+#     - name: grains.set
+#     - kwarg:
+#         key: 'roles:consul'
+#         val: server
+#         force: true
 
 # Replace the bootstrap config
 consul_create_cluster_replace_bootstrap:

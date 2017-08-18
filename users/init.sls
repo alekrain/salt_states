@@ -31,17 +31,16 @@
 #
 
 # Set variables from grains.
-{% set os = salt['grains.get']('os')|lower %}
 {% set hostname = salt.grains.get('id') %}
 
 # Import user data from Pillar
-{% set users = salt.pillar.get('users') %}
+{% set users = salt.pillar.get('users:users') %}
 
 # Iterate through all users in Pillar data.
 {% for user, args in users.iteritems() %}
 users_{{ user }}:
   # Create group
-  {% if 'gid' in args %}
+  {% if args.gid is defined %}
   group.present:
     - gid: {{ args.gid }}
   {% else %}
@@ -53,22 +52,22 @@ users_{{ user }}:
   # Create user
   user.present:
     - name: {{ user }}
-    {% if 'fullname' in args %}
+    {% if args.fullname is defined %}
     - fullname: {{ args.fullname }}
     {% endif %}
-    {% if 'shell' in args %}
+    {% if args.shell is defined %}
     - shell: {{ args.shell }}
     {% endif %}
-    {% if 'home' in args %}
+    {% if args.home is defined %}
     - home: {{ args.home }}
     {% endif %}
-    {% if 'uid' in args %}
+    {% if args.uid is defined %}
     - uid: {{ args.uid }}
     {% endif %}
-    {% if 'gid' in args %}
+    {% if args.gid is defined %}
     - gid: {{ args.gid }}
     {% endif %}
-    {% if 'password' in args %}
+    {% if args.password is defined %}
     - password: {{ args.password }}
     - enforce_password: False
     {% endif %}
@@ -104,19 +103,18 @@ users_ssh_dir_{{ args.home }}:
 users_authorized_keys_{{ user }}_{{ loop.index }}:
   ssh_auth.present:
     - user: {{ user }}
-    {% if 'enc' in key_args %}
+    {% if key_args.enc is defined %}
     - enc: {{ key_args.enc }}
     {% endif %}
-    {% if 'name' in key_args %}
+    {% if key_args.name is defined %}
     - name: {{ key_args.name }}
     {% endif %}
-    {% if 'comment' in key_args %}
+    {% if key_args.comment is defined %}
     - comment: {{ key_args.comment }}
     {% endif %}
     - require:
       - file: {{ args.home }}/.ssh
 {% endfor %}
-{% endif %}
 
 # Make sure the SELinux context for ~/.ssh is correct.
 {% if salt.grains.get('selinux') is defined  and salt.grains.get('selinux:enabled') == true %}
@@ -130,7 +128,8 @@ users_restore_selinux_context_to_home_{{ user }}:
         recursive: True
     - watch:
       - file: users_ssh_dir_{{ args.home }}
-{% endif %}
+{% endif %} {# f salt.grains.get('selinux') is defined  and salt.grains.get('selinux:enabled') == true #}
+{% endif %} {# if args.ssh_authorized_keys #}
 
 # Add a default screenrc to all users.
 users_add_screenrc_to_{{ user }}:

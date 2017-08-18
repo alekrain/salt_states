@@ -76,7 +76,7 @@ udr_install:
 # Make UDR available in the path
 udr_symlink:
   file.symlink:
-    - name: /usr/local/bin/udr
+    - name: /usr/local/sbin/udr
     - target: /usr/local/src/UDR/src/udr
   require:
     - cmd: udr_install

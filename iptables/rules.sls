@@ -95,7 +95,7 @@ iptables_{{ table }}_{{ chain }}_{{ name }}_{{ loop.index }}:
   {% endif -%}
 {% endfor %} {# for name, params in rules.iteritems() #}
 {% endfor %} {# for rules in iptables['ruleset'][table][chain] #}
-{% endfor %} {# for chain in iptables['ruleset'][table].iterkeys() #}
+{% endfor -%} {# for chain in iptables['ruleset'][table].iterkeys() #}
 {%- endfor %} {# for table in iptables['ruleset'].iterkeys() #}
 
 iptables_drop_all:

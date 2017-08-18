@@ -22,7 +22,7 @@ so they can be used when the master is calling the reactor file.
 
 send_pushover_event:
   local.pushover.post_message:
-    - tgt: {{ salt.grains.get('master') }}
+    - tgt: {{ salt.grains.get('id') }}
 {%- raw %}
     - tag: {{ tag }}
     - arg:

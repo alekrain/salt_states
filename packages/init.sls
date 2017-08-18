@@ -69,5 +69,5 @@ packages_service_{{ package_name }}:
     - refresh: False
   service.running:
     - name: {{ service_name }}
-    - enable: True
+    - enable: true
 {%- endfor %}
