@@ -14,10 +14,11 @@
 # ddclient:
   # install: true
   # protocol: googledomains
-  # login: wVUuII2dTM27HcCh
-  # password: 6UDfaKO6RB0NRCbQ
+  # login: loginkey
+  # password: passwordtoken
   # domain_names: nagios.alektant.com
 
+{% set ddclient = salt.pillar.get('ddclient') %}
 
 ddclient_install:
   pkg.installed:
@@ -25,9 +26,11 @@ ddclient_install:
 
 ddclient_conf_file:
   file.managed:
-    - name: /etc/ddclient.com
+    - name: /etc/ddclient.conf
     - source: salt://ddclient/ddclient.conf.jinja
     - template: jinja
+    - defaults:
+        ddclient: {{ ddclient }}
     - user: ddclient
     - group: ddclient
     - mode: 600
