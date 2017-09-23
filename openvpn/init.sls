@@ -72,7 +72,7 @@ openvpn_server_config:
     - group: root
     - mode: 600
     - watch_in:
-      - file: openvpn_service
+      - service: openvpn_service
 
 openvpn_dh_params:
   file.managed:
@@ -100,7 +100,7 @@ openvpn_{{ file }}:
     - group: root
     - mode: 600
     - watch_in:
-      - file: openvpn_service
+      - service: openvpn_service
 {% endfor %}
 
 openvpn_service:
