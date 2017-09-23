@@ -57,6 +57,10 @@ base:
     - match: pillar
     - nagios
 
+  'nfs:install:true':
+    - match: pillar
+    - nfs
+
   'openvpn:install:true':
     - match: pillar
     - openvpn
