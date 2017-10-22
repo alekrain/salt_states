@@ -76,3 +76,11 @@ base:
   'rclone:install:true':
     - match: pillar
     - rclone
+
+  'routing:install:true':
+    - match: pillar
+    - routing
+
+  'zfs:install:true':
+    - match: pillar
+    - zfs

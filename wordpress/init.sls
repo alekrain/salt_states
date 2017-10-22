@@ -12,5 +12,8 @@
 
 
 include:
+  - mysql
+  - php-fpm
+  - nginx
+  - .mysql
   - .wordpress
-  - .nginx
