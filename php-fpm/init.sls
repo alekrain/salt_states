@@ -1,7 +1,7 @@
 # =============================================================================
 # SaltStack State File
 #
-# NAME: php-fpm/init.sls
+# NAME: php-fpm/php-fpm.sls
 # WRITTEN BY: Alek Tant of SmartAlek Solutions
 # DATE  : 2017.10.09
 #
@@ -25,7 +25,7 @@ php-fpm/init.sls - fix path info setting:
 php-fpm/init.sls - template the php-fpm www.conf file:
   file.managed:
     - name: /etc/php-fpm.d/www.conf
-    - source: salt://php-fpm/www.conf.jinja
+    - source: salt://php-fpm/files/www.conf.jinja
     - template: jinja
     - defaults:
         phpfpm: {{ phpfpm }}

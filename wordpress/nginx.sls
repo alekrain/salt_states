@@ -11,24 +11,18 @@
 #
 
 
-{% set wordpress = salt.pillar.get('wordpress') %}
-{% set minion_id = salt.grains.get('id') %}
-
-wordpress_nginx_config:
+wordpress/nginx.sls - Install phpfpm configuration for nginx:
   file.managed:
-    - name: /etc/nginx/nginx.conf
-    - source: salt://wordpress/files/nginx.conf.jinja
-    - template: jinja
+    - name: /etc/nginx/default.d/phpfpm.conf
+    - source: salt://wordpress/files/nginx_phpfpm.conf
     - user: nginx
     - group: nginx
     - mode: 644
-    - defaults:
-        wordpress: {{ wordpress }}
 
-wordpress_nginx_service:
+wordpress/nginx.sls - Ensure nginx is running:
   service.running:
     - name: nginx
     - reload: true
     - enable: true
     - watch:
-      - file: wordpress_nginx_config
+      - file: wordpress/nginx.sls - Install phpfpm configuration for nginx

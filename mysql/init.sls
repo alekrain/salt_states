@@ -22,8 +22,8 @@
 
 
 {% set mysql = salt.pillar.get('mysql') %}
-{% set roles = salt.grains.get('roles', []) %}
-{% if mysql not in roles %}
+
+{% if 'mysql' not in salt.grains.get('roles', []) %}
   {% do mysql.update({'pass': mysql['default_pass']}) %}
 {% endif %}
 
@@ -58,6 +58,6 @@ mysql/init.sls - Set grain for next time:
     - name: roles
     - value: mysql
     - require:
-      - mysql_query: mysql/init.sls - Set root password
-      - mysql_query: mysql/init.sls - Drop the test database
+      - mysql_user: mysql/init.sls - Set root password
+      - mysql_database: mysql/init.sls - Drop the test database
 {% endif %}

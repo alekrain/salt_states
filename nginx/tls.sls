@@ -23,6 +23,8 @@ nginx/init.sls - Install the private key:
     - user: root
     - group: root
     - mode: 644
+    - watch_in:
+      - service: nginx/tls.sls - Start the nginx service
 
 nginx/init.sls - Install the full chain:
   file.managed:
@@ -31,6 +33,8 @@ nginx/init.sls - Install the full chain:
     - user: root
     - group: root
     - mode: 644
+    - watch_in:
+      - service: nginx/tls.sls - Start the nginx service
 
 nginx/init.sls - Install the cert:
   file.managed:
@@ -39,6 +43,8 @@ nginx/init.sls - Install the cert:
     - user: root
     - group: root
     - mode: 644
+    - watch_in:
+      - service: nginx/tls.sls - Start the nginx service
 
 nginx/init.sls - Install the chain:
   file.managed:
@@ -47,6 +53,18 @@ nginx/init.sls - Install the chain:
     - user: root
     - group: root
     - mode: 644
+    - watch_in:
+      - service: nginx/tls.sls - Start the nginx service
+
+nginx/init.sls - Install the nginx conf for ssl:
+  file.managed:
+    - name: /etc/nginx/default.d/ssl.conf
+    - source: salt://nginx/files/ssl.conf
+    - user: root
+    - group: root
+    - mode: 644
+    - watch_in:
+      - service: nginx/tls.sls - Start the nginx service
 
   {% elif nginx['tls']['self_signed'] is defined %}
 
@@ -66,6 +84,13 @@ nginx/init.sls - Create self signed cert:
     - digest: {{ nginx['tls']['self_signed']['digest'] }}
     - replace: {{ nginx['tls']['self_signed']['replace'] }}
     - unless: test -f {{ nginx['tls']['self_signed']['cacert_path'] }}/{{ nginx['tls']['self_sign']['tls_dir'] }}/certs/{{ minion_id }}.crt;
+    - watch_in:
+      - service: nginx/tls.sls - Start the nginx service
 
   {% endif %} {# if nginx['tls']['lets_encrypt'] is defined #}
 {% endif %} {# if nginx['tls'] is defined #}
+
+nginx/tls.sls - Start the nginx service:
+  service.running:
+    - name: nginx
+    - enable: true

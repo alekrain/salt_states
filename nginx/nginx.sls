@@ -32,7 +32,7 @@ nginx/init.sls - Install pyopenssl:
 nginx/init.sls - Install the primary conf file:
   file.managed:
     - name: /etc/nginx/nginx.conf
-    - source: salt://nginx/nginx.conf.jinja
+    - source: salt://nginx/files/nginx.conf.jinja
     - template: jinja
     - defaults:
         nginx: {{ nginx }}
