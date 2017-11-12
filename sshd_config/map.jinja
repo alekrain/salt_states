@@ -43,10 +43,6 @@ centos6:
   {% do sshd_params.update(sshd_configurations.root_login) %}
 {% elif salt.pillar.get('sshd_config:insecure') == True %}
   {% do sshd_params.update(sshd_configurations.insecure) %}
-{% elif roles is iterable and 'insecure' in roles %}
-  {% do sshd_params.update(sshd_configurations.insecure) %}
-{% elif roles is iterable and 'moderate' in roles %}
-  {% do sshd_params.update(sshd_configurations.root_login) %}
 {% endif %}
 
 {% if os == 'CentOS-6' %}

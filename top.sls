@@ -18,6 +18,8 @@ base:
     - users
     - sudoers
     - sshd_config
+    - minion
+    - selinux
     - udr
     - nrpe
 
@@ -45,9 +47,9 @@ base:
     - match: pillar
     - kernel_params
 
-  'iptables:install:true':
-    - match: pillar
-    - iptables
+  # 'iptables:install:true':
+  #   - match: pillar
+  #   - iptables
 
   'master:install:true':
     - match: pillar
