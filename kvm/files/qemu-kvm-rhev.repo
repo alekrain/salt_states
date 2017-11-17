@@ -1,0 +1,7 @@
+[qemu-kvm-rhev]
+name=oVirt rebuilds of qemu-kvm-rhev
+baseurl=http://resources.ovirt.org/pub/ovirt-3.6/rpm/el7Server/
+mirrorlist=http://resources.ovirt.org/pub/yum-repo/mirrorlist-ovirt-3.6-el7Server
+enabled=1
+skip_if_unavailable=1
+gpgcheck=0

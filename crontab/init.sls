@@ -1,7 +1,7 @@
 #===============================================================================
 # SaltStack State File
 #
-# NAME: cron/init.sls
+# NAME: crontab/init.sls
 # WRITTEN BY: Alek Tant of SmartAlek Solutions
 # DATE  : 2016.04.08
 #
@@ -26,14 +26,14 @@
 {%- set crontab = salt.pillar.get('crontab') %}
 
 {%- for user, tasks in crontab.iteritems() %}
-crontab_add_header:
+crontab/init.sls - add header for {{ user }}:
   cron.env_present:
     - name: PATH
     - user: {{ user }}
     - value: "/usr/local/sbin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin"
 
 {%- for task, params in tasks.iteritems() %}
-crontab_{{ user }}_{{ task }}:
+crontab/init.sls - Add {{ task }} for {{ user }}:
   cron.present:
     - user: {{ user }}
     - identifier: {{ params.identifier }}

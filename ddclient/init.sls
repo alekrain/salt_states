@@ -20,11 +20,11 @@
 
 {% set ddclient = salt.pillar.get('ddclient') %}
 
-ddclient_install:
+ddclient/init.sls - install:
   pkg.installed:
     - name: ddclient
 
-ddclient_conf_file:
+ddclient/init.sls - setup config file:
   file.managed:
     - name: /etc/ddclient.conf
     - source: salt://ddclient/ddclient.conf.jinja
@@ -37,7 +37,7 @@ ddclient_conf_file:
     - require:
       - pkg: ddclient_install
 
-ddclient_service:
+ddclient/init.sls - start service:
   service.running:
     - name: ddclient
     - enable: true

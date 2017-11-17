@@ -27,7 +27,7 @@
 {% set refresh = salt.pkg.refresh_db() %}
 
 # Standard need to have packages as well as some nice to have utilities.
-packages_base:
+packages/init.sls - install base packages:
   pkg.installed:
     - refresh: False
     - names:
@@ -37,7 +37,7 @@ packages_base:
 
 
 # Version Packages
-packages_version:
+packages/init.sls - install version packages:
   pkg.installed:
     - refresh: False
     - names:
@@ -46,7 +46,7 @@ packages_version:
 {%- endfor %}
 
 
-packages_development:
+packages/init.sls - install development packages:
   pkg.installed:
     - refresh: False
     - names:
@@ -56,14 +56,14 @@ packages_development:
 
 
 {% for pip_package in pip_packages %}
-packages_pip_{{ pip_package }}:
+packages/init.sls - install pip package {{ pip_package }}:
   pip.installed:
     - name: {{ pip_package }}
 {%- endfor %}
 
 
 {% for package_name, service_name in service_packages.iteritems() %}
-packages_service_{{ package_name }}:
+packages/init.sls - install package and start service for {{ package_name }}:
   pkg.installed:
     - name: {{ package_name }}
     - refresh: False

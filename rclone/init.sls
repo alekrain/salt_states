@@ -22,6 +22,7 @@ rclone_archive_unzip:
     - user: root
     - group: root
     - if_missing: /usr/local/src/{{ rclone.version }}
+    - unless: if ls /usr/local/src/rclone*/rclone; then exit 0; else exit 1; fi
 
 rclone_symlink:
   file.symlink:
