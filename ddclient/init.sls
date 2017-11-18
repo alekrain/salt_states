@@ -35,11 +35,11 @@ ddclient/init.sls - setup config file:
     - group: ddclient
     - mode: 600
     - require:
-      - pkg: ddclient_install
+      - pkg: ddclient/init.sls - install
 
 ddclient/init.sls - start service:
   service.running:
     - name: ddclient
     - enable: true
     - watch:
-      - file: ddclient_conf_file
+      - file: ddclient/init.sls - setup config file
