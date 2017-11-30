@@ -49,17 +49,19 @@
 
 {% set master = salt.pillar.get('master') %}
 
-{% if master.master.conf is defined %}
+{% if master.conf is defined %}
 master_master_packages:
   pkg.installed:
     - names:
       - salt-master
 
 master_master_conf:
-  file.serialize:
+  file.managed:
     - name: /etc/salt/master
-    - dataset_pillar: "master:master:conf"
-    - formatter: yaml
+    - source: salt://master/files/master.jinja
+    - template: jinja
+    - defaults:
+        conf: {{ master['conf'] }}
     - user: root
     - group: root
     - mode: 600
@@ -157,10 +159,6 @@ master_cloud_profiles_{{ profile }}:
     - mode: 600
 {% endfor %} {# for profile in master.cloud.profiles #}
 {% endif %} {# if master.cloud is defined #}
-
-master_update_engines:
-  module.run:
-    - name: saltutil.sync_engines
 
 master_master_restart:
   service.running:

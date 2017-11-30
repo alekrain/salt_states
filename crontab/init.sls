@@ -10,22 +10,24 @@
 # NOTES:
 #   Pillar should look like:
 #     crontab:
-#       user:
-#         task:
-#           identifier: salt_identifier
-#           comment:  some_comment
-#           name:  to_perform
-#           special: optional [@reboot, @daily, @hourly, ...]
-#           minute: optional minute, default is '*'
-#           hour: optional hour, default is '*'
-#           daymonth: optional day of month, default is '*'
-#           month: optional month, default is '*'
-#           dayweek: optional day week, default is '*'
+#       install: true
+#       users:
+#         user:
+#           task:
+#             identifier: salt_identifier
+#             comment:  some_comment
+#             name:  to_perform
+#             special: optional [@reboot, @daily, @hourly, ...]
+#             minute: optional minute, default is '*'
+#             hour: optional hour, default is '*'
+#             daymonth: optional day of month, default is '*'
+#             month: optional month, default is '*'
+#             dayweek: optional day week, default is '*'
 #
 
 {%- set crontab = salt.pillar.get('crontab') %}
 
-{%- for user, tasks in crontab.iteritems() %}
+{%- for user, tasks in crontab['users'].iteritems() %}
 crontab/init.sls - add header for {{ user }}:
   cron.env_present:
     - name: PATH

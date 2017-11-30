@@ -21,7 +21,6 @@ base:
     - minion
     - selinux
     - udr
-    - nrpe
 
   # 'consul:install:true':
   #   - match: pillar
@@ -59,6 +58,10 @@ base:
     - match: pillar
     - nagios
 
+  'nrpe:install:true':
+    - match: pillar
+    - nrpe
+
   'nfs:install:true':
     - match: pillar
     - nfs
@@ -82,6 +85,14 @@ base:
   'routing:install:true':
     - match: pillar
     - routing
+
+  'rsyslog:install:true':
+    - match: pillar
+    - rsyslog
+
+  'sumologic:install:true':
+    - match: pillar
+    - sumologic
 
   'zfs:install:true':
     - match: pillar

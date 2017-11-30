@@ -31,9 +31,7 @@ nrpe_uid:
 # Make sure the NRPE package is installed after the nrpe user and group have been setup.
 nrpe_install:
   pkg.installed:
-    - names:
-      - nrpe
-      - nagios-plugins-all
+    - name: nrpe
     - require:
       - group: nrpe_gid
       - user: nrpe_uid
@@ -42,14 +40,11 @@ nrpe_install:
 nrpe_config_file:
   file.managed:
     - name: /etc/nagios/nrpe.cfg
-    - source: salt://nrpe/nrpe.cfg
+    - source: salt://nrpe/files/nrpe.cfg.jinja
     - makedirs: True
     - user: root
     - group: root
     - mode: 644
     - template: jinja
     - defaults:
-        nagios_server: {{ nrpe['nagios_server'] }}
-        command_timeout: {{ nrpe['command_timeout'] }}
-        connection_timeout: {{ nrpe['connection_timeout'] }}
-        checks: {{ nrpe['checks'] }}
+        nrpe: {{ nrpe }}

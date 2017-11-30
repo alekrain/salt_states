@@ -37,9 +37,6 @@
     #       some_boolean: (on || off)
 
 
-# Get the nrpe pillar data
-{% set nrpe = salt.pillar.get('nrpe') %}
-
 # Install custom plugins
 include:
   - nrpe.setup
