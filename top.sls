@@ -42,6 +42,10 @@ base:
     - match: pillar
     - engines
 
+  'fail2ban:install:true':
+    - match: pillar
+    - fail2ban
+
   'kernel_params:install:true':
     - match: pillar
     - kernel_params

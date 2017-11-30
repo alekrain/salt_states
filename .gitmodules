@@ -4,3 +4,9 @@
 [submodule "_engines"]
 	path = _engines
 	url = https://github.com/alektant/npi.git
+[submodule "_utils"]
+	path = _utils
+	url = https://github.com/alektant/salt_utils.git
+[submodule "_modules"]
+	path = _modules
+	url = https://github.com/alektant/salt_modules.git

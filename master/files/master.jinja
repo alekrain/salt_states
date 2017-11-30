@@ -513,7 +513,7 @@ cli_summary: True
 {%- if conf.runner_dirs is defined %}
 runner_dirs:
   {%- for dir in conf.runner_dirs %}
-  {{ dir }}
+  - {{ dir }}
   {%- endfor %}
 {% endif %}
 
@@ -622,10 +622,12 @@ state_output: {{ conf.state_output }}
 #
 {%- if conf.file_roots is defined %}
 file_roots:
-  base:
-    {%- for dir in conf.file_roots %}
-    {{ dir }}
+  {%- for root, dirs in conf.file_roots.iteritems() %}
+  {{ root }}:
+    {%- for dir in dirs %}
+    - {{ dir }}
     {%- endfor %}
+  {%- endfor %}
 {%- endif %}
 
 # The master_roots setting configures a master-only copy of the file_roots dictionary,
@@ -801,13 +803,14 @@ file_roots:
 #  - hiera: /etc/hiera.yaml
 #  - cmd_yaml: cat /etc/salt/yaml
 {%- if conf.pillar_roots is defined %}
-file_roots:
-  base:
-    {%- for dir in conf.pillar_roots %}
-    {{ dir }}
+pillar_roots:
+  {%- for root, dirs in conf.pillar_roots.iteritems() %}
+  {{ root }}:
+    {%- for dir in dirs %}
+    - {{ dir }}
     {%- endfor %}
+  {%- endfor %}
 {%- endif %}
-
 
 # A list of paths to be recursively decrypted during pillar compilation.
 # Entries in this list can be formatted either as a simple string, or as a
