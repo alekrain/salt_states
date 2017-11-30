@@ -1,0 +1,16 @@
+accessid={{ user.accessid }}
+accesskey={{ user.accesskey }}
+name={{ user.name }}
+hostName={{ user.hostName }}
+{%- if user.syncSources is defined %}
+syncSources={{ user.syncSources }}
+{%- endif %}
+{%- if user.timeZone is defined %}
+timeZone={{ user.timeZone }}
+{%- endif %}
+{%- if user.category is defined %}
+category={{ user.category }}
+{%- endif %}
+{%- if user.description is defined %}
+description={{ user.description }}
+{%- endif %}

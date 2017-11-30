@@ -1,0 +1,19 @@
+#===============================================================================
+# SaltStack Jinja File
+#
+# NAME: sumologic/user_vars.jinja
+# WRITTEN BY: Alek Tant of SmartAlek Solutions
+# DATE  : 2017.11.26
+#
+# PURPOSE: Use logic to determine values to be used in the state.
+#
+
+{% set sumologic = salt.pillar.get('sumologic') %}
+
+{% if sumologic['user']['name'] is not defined %}
+  {% do sumologic['user'].update({'name': salt.grains.get('id')}) %}
+{% endif -%}
+
+{% if sumologic['user']['hostName'] is not defined %}
+  {% do sumologic['user'].update({'hostName': sumologic['user']['name']}) %}
+{% endif -%}

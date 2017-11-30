@@ -1,0 +1,11 @@
+
+module check_uptime_py 1.0;
+
+require {
+	type nagios_unconfined_plugin_exec_t;
+	type nrpe_t;
+	class file ioctl;
+}
+
+#============= nrpe_t ==============
+allow nrpe_t nagios_unconfined_plugin_exec_t:file ioctl;
