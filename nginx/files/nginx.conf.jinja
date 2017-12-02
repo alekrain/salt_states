@@ -46,7 +46,7 @@ http {
         # Load configuration files for the default server block.
         include {{ nginx.conf.http.server.include }};
 
-        {%- for error, params in conf['http']['server']['error_page'].iteritems() %}
+        {%- for error, params in nginx['conf']['http']['server']['error_page'].iteritems() %}
         error_page {{ error }} {{ params.page }};
             location = {{ params.location }} {
         }
