@@ -49,7 +49,7 @@ nginx/tls.sls - install certbot:
 
 nginx/tls.sls - execute certbot:
   cmd.wait:
-    - name: /bin/certbot --nginx certonly --non-interactive --agree-tos --no-self-upgrade --email {{ nginx.tls.email }}
+    - name: /bin/certbot --nginx certonly --non-interactive --agree-tos --no-self-upgrade --email {{ nginx.tls.email }} --domains {{ nginx.common_name }}
     - unless: test -d /etc/letsencrypt/archive
     - watch:
       - pkg: nginx/tls.sls - install certbot
