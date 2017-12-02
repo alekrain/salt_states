@@ -58,7 +58,7 @@ nginx/tls.sls - setup crontab for renewal:
   cron.present:
     - user: root
     - identifier: certbot_update_tls_cert
-    - coment: Update TLS Cert with Certbot
+    - comment: Update TLS Cert with Certbot
     - name: /bin/certbot renew
     - minute: 0
     - hour: 16
@@ -89,7 +89,7 @@ nginx/init.sls - Create self signed cert:
 nginx/init.sls - Install the nginx conf for tls:
   file.managed:
     - name: /etc/nginx/default.d/ssl.conf
-    - source: salt://nginx/files/ssl.conf
+    - source: salt://nginx/files/ssl.conf.jinja
     - template: jinja
     - defaults:
         tls: {{ nginx.tls }}
