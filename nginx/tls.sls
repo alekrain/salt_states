@@ -34,7 +34,7 @@
 {% if nginx['tls'] is defined %}
 nginx/tls.sls - Install nginx ssl modules:
   pkg.installed:
-    - names: mod_ssl
+    - name: mod_ssl
 
 nginx/tls.sls - Install pyopenssl:
   pip.installed:
