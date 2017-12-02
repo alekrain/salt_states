@@ -29,6 +29,17 @@ nginx/init.sls - Install the primary conf file:
     - require:
       - pkg: nginx/init.sls - Install packages
 
+{%- for dir in ['/usr/share/nginx/modules', '/etc/nginx/conf.d', '/etc/nginx/default.d'] %}
+nginx/init.sls - make sure supporting dir exists - {{ dir }}:
+  file.directory:
+    - name: {{ dir }}
+    - user: root
+    - group: root
+    - dir_mode: 755
+    - file_mode: 644
+    - makedirs: true
+{%- endfor %}
+
 nginx/init.sls - Start the service:
   service.running:
     - name: nginx

@@ -8,7 +8,7 @@ error_log {{ nginx.conf.error_log }};
 pid {{ nginx.conf.pid }};
 
 # Load dynamic modules. See /usr/share/nginx/README.dynamic.
-include {{ nginx.conf.include }};
+include /usr/share/nginx/modules/*.conf;
 
 events {
     {{ nginx.conf.events }};
@@ -33,7 +33,7 @@ http {
     # Load modular configuration files from the /etc/nginx/conf.d directory.
     # See http://nginx.org/en/docs/ngx_core_module.html#include
     # for more information.
-    include {{ nginx.conf.http.include }};
+    include /etc/nginx/conf.d/*.conf;
 
     server {
         {%- for listen in nginx.conf.http.server.listen %}
@@ -44,7 +44,7 @@ http {
         index        {{ nginx.conf.http.server.index }};
 
         # Load configuration files for the default server block.
-        include {{ nginx.conf.http.server.include }};
+        include /etc/nginx/default.d/*.conf;
 
         {%- for error, params in nginx['conf']['http']['server']['error_page'].iteritems() %}
         error_page {{ error }} {{ params.page }};
