@@ -30,10 +30,10 @@ http {
     include             /etc/nginx/mime.types;
     default_type        application/octet-stream;
 
-    # Load modular configuration files from the /etc/nginx/nginx.conf.d directory.
+    # Load modular configuration files from the /etc/nginx/conf.d directory.
     # See http://nginx.org/en/docs/ngx_core_module.html#include
     # for more information.
-    include {{ nginx.conf.include }};
+    include {{ nginx.conf.http.include }};
 
     server {
         {%- for listen in nginx.conf.http.server.listen %}
