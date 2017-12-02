@@ -23,8 +23,8 @@ nginx/init.sls - Install the primary conf file:
     - template: jinja
     - defaults:
         nginx: {{ nginx }}
-    - user: nginx
-    - group: nginx
+    - user: root
+    - group: root
     - mode: 644
     - require:
       - pkg: nginx/init.sls - Install packages
