@@ -18,16 +18,7 @@ nginx/init.sls - Install packages:
   pkg.installed:
     - names:
       - nginx
-      - mod_ssl
       - httpd-tools
-      - python2-certbot-nginx
-
-nginx/init.sls - Install pyopenssl:
-  pip.installed:
-    - name: pyopenssl
-    - bin_env: /bin/pip2
-    - reload_modules: True
-
 
 nginx/init.sls - Install the primary conf file:
   file.managed:
@@ -35,12 +26,12 @@ nginx/init.sls - Install the primary conf file:
     - source: salt://nginx/files/nginx.conf.jinja
     - template: jinja
     - defaults:
-        nginx: {{ nginx }}
+        conf: {{ nginx.conf }}
     - user: nginx
     - group: nginx
     - mode: 644
-  require:
-    - pkg: nginx/init.sls - Install packages
+    - require:
+      - pkg: nginx/init.sls - Install packages
 
 nginx/init.sls - Start the service:
   service.running:
