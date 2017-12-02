@@ -1,6 +1,6 @@
 {%- if nginx.tls.certbot is defined %}
 listen {{ nginx.tls.certbot.listen }};
-ssl_certificate {{ nginx.common_name }}/fullchain.pem;
+ssl_certificate /etc/letsencrypt/live/{{ nginx.common_name }}/fullchain.pem;
 ssl_certificate_key /etc/letsencrypt/live/{{ nginx.common_name }}/privkey.pem;
 include /etc/letsencrypt/options-ssl-nginx.conf;
 {%- else %}
