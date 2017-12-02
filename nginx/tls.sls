@@ -7,27 +7,6 @@
 #
 # PURPOSE: Setup TLS for Nginx
 #
-# EXAMPLE PILLAR:
-#
-# nginx:
-#   tls:
-#     email: noc@smartaleksolutions.com
-#     certbot:
-#       listen: 443 ssl
-#       fqdn: salt.smartaleksolutions.com
-#     self:
-#       listen: 443 ssl
-#       tls_dir: tls
-#       bits: 2048
-#       country: US
-#       state: GA
-#       locality: Woodsticks
-#       organization: SmartAlek Solutions
-#       organizational_unit: DevOps
-#       cacert_path: /etc/pki
-#       digest: sha256
-#       replace: false
-
 
 {% set nginx = salt.pillar.get('nginx') %}
 

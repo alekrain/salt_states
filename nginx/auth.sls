@@ -2,7 +2,7 @@
 # SaltStack State File
 #
 # NAME: nginx/auth.sls
-# VERSION: 1.0
+# WRITTEN BY: Alek Tant of SmartAlek Solutions
 # DATE  : 2016.02.27
 #
 # PURPOSE: Setup nginx

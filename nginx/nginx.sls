@@ -2,14 +2,10 @@
 # SaltStack State File
 #
 # NAME: nginx/nginx.sls
-# VERSION: 1.0
+# WRITTEN BY: Alek Tant of SmartAlek Solutions
 # DATE  : 2016.02.27
 #
 # PURPOSE: Setup nginx
-#
-# CHANGE LOG:
-#
-# NOTES:
 #
 
 {% set nginx = salt.pillar.get('nginx') %}
