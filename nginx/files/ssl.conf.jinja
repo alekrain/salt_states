@@ -1,0 +1,14 @@
+{%- if tls.certbot is defined %}
+listen {{ tls.certbot.listen }};
+ssl_certificate {{ tls.certbot.fqdn }}/fullchain.pem;
+ssl_certificate_key /etc/letsencrypt/live/{{ tls.certbot.fqdn }}/privkey.pem;
+include /etc/letsencrypt/options-ssl-nginx.conf;
+{%- else %}
+listen {{ tls.self.listen }};
+ssl_certificate {{ tls.self.cacert_path }}/{{ tls.self.tls_dir }}/certs/{{ minion_id }}.crt;
+ssl_certificate_key {{ tls.self.cacert_path }}/{{ tls.self.tls_dir }}/certs/{{ minion_id }}.key;
+{%- endif %}
+
+if ($scheme != "https") {
+    return 301 https://$host$request_uri;
+}
