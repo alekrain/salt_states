@@ -2,16 +2,16 @@
 #   * Official English Documentation: http://nginx.org/en/docs/
 #   * Official Russian Documentation: http://nginx.org/ru/docs/
 
-user {{ conf.user }};
-worker_processes {{ conf.worker_processes }};
-error_log {{ conf.error_log }};
-pid {{ conf.pid }};
+user {{ nginx.conf.user }};
+worker_processes {{ nginx.conf.worker_processes }};
+error_log {{ nginx.conf.error_log }};
+pid {{ nginx.conf.pid }};
 
 # Load dynamic modules. See /usr/share/nginx/README.dynamic.
-include {{ conf.include }};
+include {{ nginx.conf.include }};
 
 events {
-    {{ conf.events }};
+    {{ nginx.conf.events }};
 }
 
 http {
@@ -19,32 +19,32 @@ http {
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
 
-    access_log  {{ conf.http.access_log }};
+    access_log  {{ nginx.conf.http.access_log }};
 
-    sendfile            {{ conf.http.sendfile }};
-    tcp_nopush          {{ conf.http.tcp_nopush }};
-    tcp_nodelay         {{ conf.http.tcp_nodelay }};
-    keepalive_timeout   {{ conf.http.keepalive_timeout }};
-    types_hash_max_size {{ conf.http.types_hash_max_size }};
+    sendfile            {{ nginx.conf.http.sendfile }};
+    tcp_nopush          {{ nginx.conf.http.tcp_nopush }};
+    tcp_nodelay         {{ nginx.conf.http.tcp_nodelay }};
+    keepalive_timeout   {{ nginx.conf.http.keepalive_timeout }};
+    types_hash_max_size {{ nginx.conf.http.types_hash_max_size }};
 
     include             /etc/nginx/mime.types;
     default_type        application/octet-stream;
 
-    # Load modular configuration files from the /etc/nginx/conf.d directory.
+    # Load modular configuration files from the /etc/nginx/nginx.conf.d directory.
     # See http://nginx.org/en/docs/ngx_core_module.html#include
     # for more information.
-    include {{ conf.include }};
+    include {{ nginx.conf.include }};
 
     server {
-        {%- for listen in conf.http.server.listen %}
+        {%- for listen in nginx.conf.http.server.listen %}
         listen       {{ listen }};
         {%- endfor %}
-        server_name  {{ conf.http.server.common_name }};
-        root         {{ conf.http.server.root }};
-        index        {{ conf.http.server.index }};
+        server_name  {{ nginx.common_name }};
+        root         {{ nginx.conf.http.server.root }};
+        index        {{ nginx.conf.http.server.index }};
 
         # Load configuration files for the default server block.
-        include {{ conf.http.server.include }};
+        include {{ nginx.conf.http.server.include }};
 
         {%- for error, params in conf['http']['server']['error_page'].iteritems() %}
         error_page {{ error }} {{ params.page }};

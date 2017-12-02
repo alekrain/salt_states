@@ -92,7 +92,7 @@ nginx/init.sls - Install the nginx conf for tls:
     - source: salt://nginx/files/ssl.conf.jinja
     - template: jinja
     - defaults:
-        tls: {{ nginx.tls }}
+        nginx: {{ nginx }}
     - user: root
     - group: root
     - mode: 644

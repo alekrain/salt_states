@@ -26,7 +26,7 @@ nginx/init.sls - Install the primary conf file:
     - source: salt://nginx/files/nginx.conf.jinja
     - template: jinja
     - defaults:
-        conf: {{ nginx.conf }}
+        nginx: {{ nginx }}
     - user: nginx
     - group: nginx
     - mode: 644
