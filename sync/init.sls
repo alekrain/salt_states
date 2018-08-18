@@ -53,7 +53,7 @@
 {{ sls }} - install rclone configuration file:
   file.managed:
     - name: /root/.config/rclone/rclone.conf
-    - contents_pillar: rclone:conf
+    - contents_pillar: sync:rclone:conf
     - user: root
     - group: root
     - mode: 600
@@ -64,8 +64,8 @@
     - source: salt://{{ sls }}/files/rclone.sh.jinja
     - template: jinja
     - defaults:
-      - rclone: {{ sync.rclone }}
-      - rsync: {{ sync.rsync }}
+        rclone: {{ sync.rclone }}
+        rsync: {{ sync.rsync }}
     - user: root
     - group: root
     - mode: 750
