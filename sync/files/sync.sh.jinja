@@ -10,6 +10,7 @@ fi
 
 # Check zpool status output for errors
 if [[ $( sudo zpool status | grep errors: ) != "errors: No known data errors" ]];
+then
     echo "Errors detected in Zpool!";
     salt-call event.fire_master "Errors Detected in ZPool!" salt/alert/harry/rclone
     exit 1
