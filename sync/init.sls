@@ -1,11 +1,11 @@
 # =============================================================================
 # SaltStack State File
 #
-# NAME: rclone/init.sls
+# NAME: {{ sls }}
 # WRITTEN BY: Alek Tant of SmartAlek Solutions
 # DATE  : 2017.08.13
 #
-# PURPOSE: Install rClone.
+# PURPOSE: Install rClone and setup script to rclone and rsync files.
 #
 # EXAMPLE PILLAR:
 #    sync:
@@ -17,11 +17,11 @@
 #          account = 01234abc
 #          key = 0123456789abcdefghijklmnopqrstuvwxyz012345
 #          endpoint =
-#        version: 'rclone-v1.38-linux-amd64'
+#        version: rclone-v1.38-linux-amd64
 #        shasum: '69bcd262f6e67eaa9f28f93460d73ad8a73612745d3c7a2bdd03d4cf85d43090'
-#        targets: [ "Stuff", "Music", "Videos", "Tech", "2TPhoto", "Photos", "Books" ]
+#        targets: [ "Stuff" ]
 #      rsync:
-#        targets: [ "Stuff", "Music", "Videos", "Tech", "2TPhoto", "Photos", "Books", "Movies" ]
+#        targets: [ "Stuff", "More Stuff"]
 
 {% set sync = salt.pillar.get('sync') %}
 
