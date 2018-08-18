@@ -20,9 +20,9 @@ fi
 mkdir -p /var/log/rclone
 {% for target, params in rclone.targets.iteritems() %}
 /usr/local/sbin/rclone sync {{ params.prefix }}/{{ target }} {{ params.bucket }}/{{ target }} --transfers 32 --log-file /var/log/rclone/rclone_{{ target }}.log --log-level INFO
-{% endfor %}
+{%- endfor %}
 
 mkdir -p /var/log/rsync
 {% for target, params in rsync.targets.iteritems() %}
 rsync -av --stats --progress --delete {{ params.prefix }}/{{ target }}/ {{ params.destination }}::{{ target }}/ --log-file=/var/log/rsync/rsync_{{ target }}.log
-{% endfor %}}
+{%- endfor %}
