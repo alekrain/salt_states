@@ -61,7 +61,7 @@
 {{ sls }} - setup script to call rclone:
   file.managed:
     - name: /root/sync.sh
-    - source: salt://{{ sls }}/files/rclone.sh.jinja
+    - source: salt://{{ sls }}/files/sync.sh.jinja
     - template: jinja
     - defaults:
         rclone: {{ sync.rclone }}
