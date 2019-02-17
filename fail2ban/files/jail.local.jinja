@@ -1,0 +1,6 @@
+{% for service, params in services.iteritems() %}
+[{{ service | upper  }}]
+{% for param, value in params.iteritems() %}
+{{ param }} = {{ value }}
+{% endfor %}
+{% endfor %}

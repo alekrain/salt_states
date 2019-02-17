@@ -13,14 +13,15 @@
 #     jail:
 #       ssh_enabled: true
 #       ignoreip: 127.0.0.1/8
-#       bantime: 600
-#       findtime: 600
-#       maxretry: 5
+#       bantime: 604800
+#       findtime: 300
+#       maxretry: 3
 #       backend: auto
 #       usedns: warn
 #       logencoding: auto
 #       chain: INPUT
-#       banaction: iptables-multiport
+#       banaction: iptables-ipset-proto6
+#       banaction_allports: iptables-ipset-proto6-allports
 #
 
 
@@ -32,18 +33,20 @@ fail2ban/init.sls - install package:
     - names:
       - fail2ban-server
 
-fail2ban/init.sls - install jail config file:
+{% for service, params in fail2ban.services.iteritems() %}
+fail2ban/init.sls - install jail.local file for {{ service }}:
   file.managed:
-    - name: /etc/fail2ban/jail.conf
-    - source: salt://fail2ban/files/jail.conf
+    - name: /etc/fail2ban/jail.d/{{ service }}.local
+    - source: salt://fail2ban/files/jail.local.jinja
     - template: jinja
     - defaults:
-        jail: {{ fail2ban.jail }}
+        services: {{ fail2ban.services }}
     - user: root
     - group: root
     - mode: 644
   require:
     - pkg: fail2ban/init.sls - install package
+{% endfor %}
 
 fail2ban_restart:
   service.running:
