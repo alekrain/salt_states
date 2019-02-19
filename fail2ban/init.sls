@@ -28,13 +28,13 @@
 {% set fail2ban = salt.pillar.get('fail2ban') %}
 
 # Install fail2ban packages
-fail2ban/init.sls - install package:
+{{ sls }} - install package:
   pkg.installed:
     - names:
       - fail2ban-server
 
 {% for service, params in fail2ban.services.iteritems() %}
-fail2ban/init.sls - install jail.local file for {{ service }}:
+{{ sls }} - install jail.local file for {{ service }}:
   file.managed:
     - name: /etc/fail2ban/jail.d/{{ service }}.local
     - source: salt://fail2ban/files/jail.local.jinja
@@ -46,9 +46,11 @@ fail2ban/init.sls - install jail.local file for {{ service }}:
     - mode: 644
   require:
     - pkg: fail2ban/init.sls - install package
+  watch_in:
+    - service: {{ sls }} service running
 {% endfor %}
 
-fail2ban_restart:
+{{ sls }} service running:
   service.running:
     - name: fail2ban
     - enable: True

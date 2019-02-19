@@ -98,6 +98,10 @@ base:
     - match: pillar
     - sumologic
 
+  'sync:install:true':
+    - match: pillar
+    - sync
+
   'zfs:install:true':
     - match: pillar
     - zfs
