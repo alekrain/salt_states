@@ -45,7 +45,7 @@
     - group: root
     - mode: 644
   require:
-    - pkg: fail2ban/init.sls - install package
+    - pkg: {{ sls }} - install package
   watch_in:
     - service: {{ sls }} service running
 {% endfor %}
@@ -54,5 +54,3 @@
   service.running:
     - name: fail2ban
     - enable: True
-    - watch:
-      - file: fail2ban/init.sls - install jail config file
