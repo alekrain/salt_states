@@ -41,7 +41,8 @@
     - source: salt://fail2ban/files/jail.local.jinja
     - template: jinja
     - defaults:
-        services: {{ fail2ban.services }}
+        service: {{ service }}
+        params: {{ params }}
     - user: root
     - group: root
     - mode: 644
