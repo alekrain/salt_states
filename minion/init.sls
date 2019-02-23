@@ -34,7 +34,7 @@
 {{ sls }} - install salt repo:
   pkg.installed:
     - sources:
-      - salt-repo: "https://repo.saltstack.com/yum/redhat/salt-repo-latest.el7.noarch.rpm"
+      - salt-repo: https://repo.saltstack.com/yum/redhat/salt-repo-latest.el7.noarch.rpm
 
 {{ sls }} - setup the minion config:
   file.managed:
@@ -59,8 +59,6 @@
 {{ sls }} - update the minion if necessary:
   cmd.run:
     - name: echo 'yum -y update salt-minion && service salt-minion restart' | at now + 20 minutes
-    - watch_in:
-      - service: {{ sls }} - ensure minion is set to run and that it is running
     - require:
       - pkg: {{ sls }} - install salt repo
 {% endif %}
