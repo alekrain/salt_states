@@ -36,6 +36,11 @@
     - sources:
       - salt-repo: https://repo.saltstack.com/yum/redhat/salt-repo-latest.el7.noarch.rpm
 
+# Compatibility requirement for 2018.3
+{{ sls }} - install psutil:
+  pip.installed:
+    - name: psutil >= 5.5.1
+
 {{ sls }} - setup the minion config:
   file.managed:
     - name: /etc/salt/minion
