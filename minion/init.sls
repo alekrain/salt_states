@@ -61,4 +61,5 @@
     - name: echo 'yum -y update salt-minion && service salt-minion restart' | at now + 20 minutes
     - watch_in:
       - service: {{ sls }} - ensure minion is set to run and that it is running
+    - require: {{ sls }} - install salt repo
 {% endif %}
