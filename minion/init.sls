@@ -34,7 +34,7 @@
 {{ sls }} - install salt repo:
   pkg.installed:
     - sources:
-      - salt-repo: https://repo.saltstack.com/yum/redhat/salt-repo-latest-1.el7.noarch.rpm
+      - salt-repo: https://repo.saltstack.com/yum/redhat/salt-repo-latest.el7.noarch.rpm
 
 {{ sls }} - setup the minion config:
   file.managed:
