@@ -1,4 +1,4 @@
 [{{ service }}]
-{% for param, value in params.iteritems() %}
+{%- for param, value in params.iteritems() %}
 {{ param }} = {{ value }}
-{% endfor %}
+{%- endfor %}
