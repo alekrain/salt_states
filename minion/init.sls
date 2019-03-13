@@ -16,6 +16,7 @@
 #
 # EXAMPLE PILLAR:
 # minion:
+#   version: '2019.2'
 #   config:
 #     master: ["salt"]
 #     master_type: str
@@ -34,7 +35,7 @@
 {{ sls }} - install salt repo:
   pkg.installed:
     - sources:
-      - salt-repo: https://repo.saltstack.com/yum/redhat/salt-repo-latest.el7.noarch.rpm
+      - salt-repo: https://repo.saltstack.com/yum/redhat/salt-repo-{{ minion.version }}.el7.noarch.rpm
 
 # Compatibility requirement for 2018.3
 {{ sls }} - install psutil:
