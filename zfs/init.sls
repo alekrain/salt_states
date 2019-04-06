@@ -8,15 +8,29 @@
 # PURPOSE: Install ZFS on Centos7
 #
 
+{% set os_release_as_list = salt.grains.get('osrelease').split('.') %}
+{% set os_release_underscore = os_release_as_list[0] + "_" os_release_as_list[1] %}
+{% set os_release_dot = os_release_as_list[0] + "." os_release_as_list[1] %}
 
 {{ sls }} - Install ZFS release package:
   pkg.installed:
     - sources:
-      - zfs-release: http://download.zfsonlinux.org/epel/zfs-release.el7_4.noarch.rpm
+      - zfs-release: http://download.zfsonlinux.org/epel/zfs-release.el{{ os_release_underscore }}.noarch.rpm
 
 {{ sls }} - Install ZFS:
   pkg.installed:
     - name: zfs
+
+{{ sls }} - Install ZFS YUM repo file:
+  file.managed:
+    - name: /etc/yum.repos.d/zfs.repo
+    - source: salt://zfs/files/zfs.repo.jinja
+    - template: jinja
+    - context:
+        os_release = {{ os_release_dot }}
+    - user: root
+    - group: root
+    - mode: 644
 
 {{ sls }} - cronjob to mount zpool:
   cron.present:
