@@ -26,7 +26,7 @@
 {{ sls }} - install script:
   file.managed:
     - name: /opt/smrt/ddupdater/ddupdater.py
-    - source: salt://ddupdater/ddupdater.py.jinja
+    - source: salt://ddupdater/files/ddupdater.py.jinja
     - makedirs: true
     - template: jinja
     - defaults:
@@ -40,7 +40,6 @@
 {{ sls }} - install service file:
   file.managed:
     - name: /usr/lib/systemd/system/ddupdater.service
-    - source: salt://ddupdater/ddupdater.service.jinja
     - user: ddupdater
     - group: ddupdater
     - mode: 644
@@ -62,6 +61,7 @@
 
 {{ sls }} - install log rotate config:
   file.managed:
+    - name: /etc/logrotate.d/ddupdater
     - user: root
     - group: root
     - mode: 644
