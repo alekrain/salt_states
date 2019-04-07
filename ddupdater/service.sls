@@ -35,7 +35,7 @@
     - group: ddupdater
     - mode: 600
     - require:
-      - pkg: {{ sls }} - install
+      - pkg: {{ sls }} - install python requests
 
 {{ sls }} - install service file:
   file.managed:
@@ -44,6 +44,8 @@
     - user: ddupdater
     - group: ddupdater
     - mode: 644
+    - require:
+      - file: {{ sls }} - install script
     - contents: |
         [Unit]
         Description=Dynamic DNS Updater
@@ -63,6 +65,8 @@
     - user: root
     - group: root
     - mode: 644
+    - require:
+      - file: {{ sls }} - install script
     - contents: |
         /var/log/ddupdater.log {
             daily
