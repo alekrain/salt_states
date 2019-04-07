@@ -52,9 +52,9 @@
 
         [Service]
         Type=simple
-        RuntimeDirectory=/opt/smrt/ddupdater
+        WorkingDirectory=/opt/smrt/ddupdater
         ExecStart=/usr/bin/python2 ddupdater.py
-        ExecReload=/bin/kill -HUP $MAINPID
+        ExecStop=/bin/kill $MAINPID
 
         [Install]
         WantedBy=multi-user.target
