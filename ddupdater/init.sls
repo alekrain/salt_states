@@ -10,5 +10,5 @@
 # NOTES:
 
 include:
-  - user
-  - service
+  - .user
+  - .service
