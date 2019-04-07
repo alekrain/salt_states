@@ -53,7 +53,7 @@
         [Service]
         Type=simple
         WorkingDirectory=/opt/smrt/ddupdater
-        ExecStart=/usr/bin/python2 ddupdater.py
+        ExecStart=/usr/bin/python2 /opt/smrt/ddupdater/ddupdater.py
         ExecStop=/bin/kill $MAINPID
 
         [Install]
