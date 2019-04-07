@@ -30,9 +30,9 @@ base:
     - match: pillar
     - crontab
 
-  'ddclient:install:true':
+  'ddupdater:install:true':
     - match: pillar
-    - ddclient
+    - ddupdater
 
   'dnsmasq:install:true':
     - match: pillar
