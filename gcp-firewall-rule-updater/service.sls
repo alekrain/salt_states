@@ -21,8 +21,8 @@
 
 {{ sls }} - install script:
   file.managed:
-    - name: /opt/smrt/gcp-fru/gcp-firewall-rules-updater.py
-    - source: salt://gcp-firewall-rules-updater/files/gcp-firewall-rules-updater.py.jinja
+    - name: /opt/smrt/gcp-fru/gcp-firewall-rule-updater.py
+    - source: salt://gcp-firewall-rule-updater/files/gcp-firewall-rule-updater.py.jinja
     - makedirs: true
     - template: jinja
     - defaults:
@@ -35,7 +35,7 @@
 
 {{ sls }} - install service file:
   file.managed:
-    - name: /usr/lib/systemd/system/gcp-firewall-rules-updater.service
+    - name: /usr/lib/systemd/system/gcp-firewall-rule-updater.service
     - user: gcp-fru
     - group: gcp-fru
     - mode: 644
@@ -43,13 +43,13 @@
       - file: {{ sls }} - install script
     - contents: |
         [Unit]
-        Description=GCP Firewall Rules Updater
+        Description=GCP Firewall Rule Updater
         After=network.target
 
         [Service]
         Type=simple
         WorkingDirectory=/opt/smrt/gcp-fru
-        ExecStart=/usr/bin/python2 /opt/smrt/gcp-fru/gcp-firewall-rules-updater.py
+        ExecStart=/usr/bin/python2 /opt/smrt/gcp-fru/gcp-firewall-rule-updater.py
         ExecStop=/bin/kill $MAINPID
 
         [Install]
