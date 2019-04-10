@@ -37,3 +37,7 @@
     - name: google-cloud-sdk
     - require:
       - file: {{ sls }} - setup gcloud repo
+
+{{ sls }} - install python client libraries:
+  pip.installed:
+    - name: google-api-python-client
