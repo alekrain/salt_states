@@ -52,15 +52,15 @@ def update_fw_rule(project, rule, ip):
 
 
 if __name__ == '__main__':
-    rule = 'salt'
-    domain_name = 'vpn.smartaleksolutions.com'
+    project = '{{ project }}'
+    rule = '{{ rule }}'
+    domain_name = '{{ domain }}'
 
     while True:
-        project = '{{ project }}'
-        current_rule_sources = get_rule_ip('{{ rule }}')
-        domain_ip = get_domain_ip('{{ domain }}')
+        current_rule_sources = get_rule_ip(project=project, rule=rule)
+        domain_ip = get_domain_ip(domain_name)
         if domain_ip not in current_rule_sources:
-            update_fw_rule('salt', domain_ip)
+            update_fw_rule(project=project, rule=rule, ip=domain_ip)
         else:
             log.info('Found IP {0} already in the firewall rule. Making no changes.'.format(domain_ip))
         sleep(600)
