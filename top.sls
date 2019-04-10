@@ -46,6 +46,10 @@ base:
     - match: pillar
     - fail2ban
 
+  'gcp-fru:install:true':
+    - match: pillar
+    - gcp-firewall-rule-updater
+
   'kernel_params:install:true':
     - match: pillar
     - kernel_params
