@@ -74,7 +74,7 @@
 
 {{ sls }} - start service:
   service.running:
-    - name: gcp-firewall-rules-updater
+    - name: gcp-firewall-rule-updater
     - enable: true
     - watch:
       - file: {{ sls }} - install service file
