@@ -17,7 +17,7 @@ from time import sleep
 from googleapiclient.discovery import build
 
 
-log = logging.basicConfig(filename='/var/log/gcp_fw_rule_updater.log',
+log = logging.basicConfig(filename='/var/log/gcp-firewall-rule-updater.log',
                           format='%(asctime)s [%(name)s][%(levelname)s][%(process)d] %(message)s',
                           level=logging.INFO,
                           handlers=WatchedFileHandler)

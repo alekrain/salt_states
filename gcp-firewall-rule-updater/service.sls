@@ -57,14 +57,14 @@
 
 {{ sls }} - install log rotate config:
   file.managed:
-    - name: /etc/logrotate.d/ddupdater
+    - name: /etc/logrotate.d/gcp-firewall-rule-updater
     - user: root
     - group: root
     - mode: 644
     - require:
       - file: {{ sls }} - install script
     - contents: |
-        /var/log/gcp-firewall-rules-updater.log {
+        /var/log/gcp-firewall-rule-updater.log {
             daily
             missingok
             rotate 7
