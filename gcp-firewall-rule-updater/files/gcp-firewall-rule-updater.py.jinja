@@ -11,7 +11,6 @@
 import logging
 from logging.handlers import WatchedFileHandler
 import re
-from sys import exit
 from socket import gethostbyname
 from time import sleep
 from googleapiclient.discovery import build
@@ -30,7 +29,6 @@ def get_domain_ip(domain_name):
         return current_ip
     else:
         log.critical('Could not find current IP for {0}: {1}'.format(domain_name, current_ip))
-        exit()
 
 
 def get_rule_ip(project, rule):
@@ -44,11 +42,26 @@ def get_rule_ip(project, rule):
     return source_ranges
 
 
-def update_fw_rule(project, rule, ip):
+def update_fw_rule(project, rule, ip, id=None):
     body = {'sourceRanges': [ip]}
     compute = build('compute', 'v1')
-    rule_request = compute.firewalls().patch(project=project, firewall=rule, body=body)
-    rule_data = rule_request.execute()
+    request = compute.firewalls().patch(project=project, firewall=rule, body=body)
+    resp = request.execute()
+    if 'kind' in resp.keys() and resp['kind'] == 'compute#operation':
+        
+
+
+    # if 'status' in resp.keys():
+    #     if resp['status'] in ['PENDING', 'RUNNING']:
+    #         log.info('Response: {0}'.format(resp))
+    #         sleep(1)
+    #         update_fw_rule(project, rule, ip, id=resp['id'])
+    #     elif resp['status'] in ['DONE']:
+    #         log.info('The rule {0} has been updated with the domain IP of {1}'.format(rule, domain_ip))
+    #     else:
+    #         log.critical('The response came back in an unexpected state: {0}'.format(resp['status']))
+    # else:
+    #     log.critical('The status key was not found in the API response!')
 
 
 if __name__ == '__main__':
@@ -60,6 +73,7 @@ if __name__ == '__main__':
         current_rule_sources = get_rule_ip(project=project, rule=rule)
         domain_ip = get_domain_ip(domain_name)
         if domain_ip not in current_rule_sources:
+            log.warning('The domain IP of {0} was not found in {1}. Updating the firewall rule {2}'.format(domain_ip, current_rule_sources, rule))
             update_fw_rule(project=project, rule=rule, ip=domain_ip)
         else:
             log.info('Found IP {0} already in the firewall rule. Making no changes.'.format(domain_ip))
