@@ -13,6 +13,7 @@ from logging.handlers import WatchedFileHandler
 import re
 from socket import gethostbyname
 from time import sleep
+from os.path import basename
 from googleapiclient.discovery import build
 
 
@@ -69,7 +70,7 @@ def update_fw_rule(project, rule, ip, id=None):
 
 
 if __name__ == '__main__':
-    log = logging.getLogger(__file__)
+    log = logging.getLogger(basename(__file__))
     project = '{{ project }}'
     rule = '{{ rule }}'
     domain_name = '{{ domain }}'
