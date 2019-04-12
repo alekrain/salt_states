@@ -1,0 +1,4 @@
+include:
+  - gcloud
+  - .user
+  - .service

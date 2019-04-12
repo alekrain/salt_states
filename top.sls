@@ -30,9 +30,9 @@ base:
     - match: pillar
     - crontab
 
-  'ddclient:install:true':
+  'ddupdater:install:true':
     - match: pillar
-    - ddclient
+    - ddupdater
 
   'dnsmasq:install:true':
     - match: pillar
@@ -45,6 +45,10 @@ base:
   'fail2ban:install:true':
     - match: pillar
     - fail2ban
+
+  'gcp-fru:install:true':
+    - match: pillar
+    - gcp-firewall-rule-updater
 
   'kernel_params:install:true':
     - match: pillar
