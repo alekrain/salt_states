@@ -29,6 +29,7 @@ def get_domain_ip(domain_name):
         return current_ip
     else:
         log.critical('Could not find current IP for {0}: {1}'.format(domain_name, current_ip))
+        raise Exception()
 
 
 def get_rule_ip(project, rule):
@@ -43,25 +44,27 @@ def get_rule_ip(project, rule):
 
 
 def update_fw_rule(project, rule, ip, id=None):
+    def _wait_for_operation(compute, project, operation):
+        log.info('Waiting for operation to finish...')
+        while True:
+            result = compute.globalOperations().get(project=project, operation=operation).execute()
+            if result['status'] == 'DONE':
+                if 'error' in result:
+                    raise Exception(result['error'])
+                return result
+            else:
+                sleep(1)
+
     body = {'sourceRanges': [ip]}
     compute = build('compute', 'v1')
     request = compute.firewalls().patch(project=project, firewall=rule, body=body)
     resp = request.execute()
     if 'kind' in resp.keys() and resp['kind'] == 'compute#operation':
-        
-
-
-    # if 'status' in resp.keys():
-    #     if resp['status'] in ['PENDING', 'RUNNING']:
-    #         log.info('Response: {0}'.format(resp))
-    #         sleep(1)
-    #         update_fw_rule(project, rule, ip, id=resp['id'])
-    #     elif resp['status'] in ['DONE']:
-    #         log.info('The rule {0} has been updated with the domain IP of {1}'.format(rule, domain_ip))
-    #     else:
-    #         log.critical('The response came back in an unexpected state: {0}'.format(resp['status']))
-    # else:
-    #     log.critical('The status key was not found in the API response!')
+        _wait_for_operation(compute=compute, project=project, operation=resp['name'])
+        log.info('Rule {0} has been successfully updated'.format(rule))
+    else:
+        log.critical('Failed to update the rule {0}! No status key was found in the API response'.format(rule))
+        raise Exception()
 
 
 if __name__ == '__main__':
@@ -73,7 +76,8 @@ if __name__ == '__main__':
         current_rule_sources = get_rule_ip(project=project, rule=rule)
         domain_ip = get_domain_ip(domain_name)
         if domain_ip not in current_rule_sources:
-            log.warning('The domain IP of {0} was not found in {1}. Updating the firewall rule {2}'.format(domain_ip, current_rule_sources, rule))
+            log.warning('The domain IP of {0} was not found in {1}. Updating the firewall rule {2}'.format(
+                        domain_ip, current_rule_sources, rule))
             update_fw_rule(project=project, rule=rule, ip=domain_ip)
         else:
             log.info('Found IP {0} already in the firewall rule. Making no changes.'.format(domain_ip))
