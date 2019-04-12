@@ -69,6 +69,7 @@ def update_fw_rule(project, rule, ip, id=None):
 
 
 if __name__ == '__main__':
+    log = logging.getLogger(__file__)
     project = '{{ project }}'
     rule = '{{ rule }}'
     domain_name = '{{ domain }}'
